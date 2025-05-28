@@ -65,11 +65,12 @@ def upgrade() -> None:
         sa.UniqueConstraint("request_id", "service_id", name="uq_request_service"),
         sa.UniqueConstraint("uuid"),
     )
-    op.create_unique_constraint(None, "role", ["uuid"])
+    op.create_unique_constraint("uq_role_uuid", "role", ["uuid"])
 
 
 def downgrade() -> None:
-    op.drop_constraint(None, "role", type_="unique")
+    op.drop_constraint("uq_role_uuid", "role", type_="unique")
     op.drop_table("request_service_relations")
     op.drop_table("request")
     op.drop_table("service")
+    op.execute("DROP TYPE IF EXISTS status")
