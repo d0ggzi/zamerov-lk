@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "learninglab"
+name = "zamerov-lk"
 version = "0.1.0"
 description = ""
 authors = ["dggz <maks-laptev.03@mail.ru>"]
@@ -28,3 +28,6 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.ruff]
 line-length = 120
+
+[tool.ruff.lint]
+ignore = ["F401"]

@@ -1,8 +1,8 @@
 """roles data migration
 
-Revision ID: e597ad0fd861
-Revises: 1df206bcdd91
-Create Date: 2025-02-12 23:47:53.848193
+Revision ID: a1e9a68d77a4
+Revises: 0ca2582b1271
+Create Date: 2025-05-25 21:10:27.010358
 
 """
 
@@ -12,11 +12,12 @@ from alembic import op
 import sqlalchemy as sa
 from sqlalchemy import orm, or_
 
-from src.domain import models
+from src.domain.models.users import Role
+
 
 # revision identifiers, used by Alembic.
-revision: str = "e597ad0fd861"
-down_revision: Union[str, None] = "1df206bcdd91"
+revision: str = "a1e9a68d77a4"
+down_revision: Union[str, None] = "0ca2582b1271"
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 
@@ -25,11 +26,10 @@ def upgrade() -> None:
     bind = op.get_bind()
     session = orm.Session(bind=bind)
     session.execute(
-        models.Role.__table__.insert().values(
+        Role.__table__.insert().values(
             [
-                {"name": "assessor"},
-                {"name": "expert"},
-                {"name": "customer"},
+                {"name": "user"},
+                {"name": "manager"},
                 {"name": "admin"},
             ]
         )
@@ -39,13 +39,12 @@ def upgrade() -> None:
 def downgrade() -> None:
     bind = op.get_bind()
     session = orm.Session(bind=bind)
-    session.delete(
-        sa.delete(models.Role).where(
+    session.execute(
+        sa.delete(Role).where(
             or_(
-                models.Role.name == "assessor",
-                models.Role.name == "expert",
-                models.Role.name == "customer",
-                models.Role.name == "admin",
+                Role.name == "user",
+                Role.name == "manager",
+                Role.name == "admin",
             )
         )
     )

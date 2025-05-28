@@ -1,15 +1,13 @@
-from typing import List
-
 import fastapi.security as _security
-from sqlalchemy import delete, select
+from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
-import src.api.schemas as schemas
+import src.api.schemas.auth as schemas
 import jwt
 
-from src.api.schemas import User
-from src.domain import models
+from src.api.schemas.auth import User
+import src.domain.models.users as models
 from src.service.exceptions import (
     UserAlreadyExistsError,
     UserNotFoundError,
@@ -31,7 +29,6 @@ async def get_user_by_email(session: Session, email: str) -> schemas.User:
         email=orm_user.email,
         name=orm_user.name,
         role_name=orm_user.role.name,
-        task_type_access=[access.task_type_id for access in orm_user.task_access],
     )
     return user
 
@@ -45,7 +42,6 @@ async def get_user_by_id(session: Session, user_id: str) -> schemas.User:
         email=orm_user.email,
         name=orm_user.name,
         role_name=orm_user.role.name,
-        task_type_access=[access.task_type_id for access in orm_user.task_access],
     )
     return user
 
@@ -58,7 +54,6 @@ async def list_users(session: Session) -> list[User]:
             email=orm_user.email,
             name=orm_user.name,
             role_name=orm_user.role.name,
-            task_type_access=[access.task_type_id for access in orm_user.task_access],
         )
         for orm_user in orm_users
     ]
@@ -75,14 +70,6 @@ async def edit_user(session: Session, user_edit: schemas.UserEdit, user: schemas
         orm_user.password = hash_password(user_edit.password)
     if user_edit.role_name is not None:
         orm_user.role = session.query(models.Role).filter_by(name=user_edit.role_name).first()
-    if user_edit.task_type_access is not None:
-        for access in orm_user.task_access:
-            session.execute(delete(models.UserTaskTypeAccess).filter_by(task_type_id=access.task_type_id))
-        session.commit()
-
-        for task_type_id in user_edit.task_type_access:
-            user_task_type_access = models.UserTaskTypeAccess(user_id=orm_user.uuid, task_type_id=task_type_id)
-            session.add(user_task_type_access)
     session.add(orm_user)
     session.commit()
     user_res = schemas.User(
@@ -90,7 +77,6 @@ async def edit_user(session: Session, user_edit: schemas.UserEdit, user: schemas
         email=orm_user.email,
         name=orm_user.name,
         role_name=orm_user.role.name,
-        task_type_access=[access.task_type_id for access in orm_user.task_access],
     )
     return user_res
 
@@ -112,7 +98,6 @@ async def create_user(session: Session, user: schemas.UserCreate) -> schemas.Use
         email=user.email,
         name=user.name,
         role_name=user.role_name,
-        task_type_access=[access.task_type_id for access in orm_user.task_access],
     )
     return user_res
 
@@ -126,7 +111,6 @@ async def authenticate_user(session: Session, email: str, password: str) -> sche
         email=email,
         name=orm_user.name,
         role_name=orm_user.role.name,
-        task_type_access=[access.task_type_id for access in orm_user.task_access],
     )
     return user_res
 

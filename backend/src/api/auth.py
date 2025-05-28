@@ -4,9 +4,9 @@ import fastapi.security as _security
 from sqlalchemy.orm import Session
 
 from src.api.dependencies import get_current_user
-from src.api.schemas import UserCreate, User, UserEdit
+from src.api.schemas.auth import UserCreate, User, UserEdit
 from src.domain.base import get_session
-from src.service import user as user_service
+from src.service import auth as user_service
 from src.service.exceptions import (
     UserAlreadyExistsError,
     RoleNotFoundError,

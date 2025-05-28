@@ -4,9 +4,9 @@ from sqlalchemy.orm import Session
 
 import jwt
 
-from src.service.user import oauth2schema
+from src.service.auth import oauth2schema
 from src.settings.config import settings
-from src.service import user as user_service
+from src.service import auth as user_service
 from src.domain.base import get_session
 from src.api.schemas import User
 
