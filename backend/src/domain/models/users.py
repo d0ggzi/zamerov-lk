@@ -31,4 +31,5 @@ class User(BaseModel):
 
     role: Mapped["Role"] = relationship("Role", back_populates="users")
 
-    requests: Mapped[list["Request"]] = relationship("Request", back_populates="user")
+    requests: Mapped[list["Request"]] = relationship("Request", back_populates="user", foreign_keys="Request.user_id")
+    employed_requests: Mapped[list["Request"]] = relationship("Request", foreign_keys="Request.employer_id")

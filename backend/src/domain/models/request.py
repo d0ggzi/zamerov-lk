@@ -24,7 +24,8 @@ class Request(BaseModel):
     status: Mapped[Status] = mapped_column(Enum(Status))
     employer_id: Mapped[UUID] = mapped_column(Uuid(as_uuid=True), ForeignKey("users.uuid"), primary_key=True)
 
-    user: Mapped["User"] = relationship("User", back_populates="requests")
+    user: Mapped["User"] = relationship("User", back_populates="requests", foreign_keys=[user_id])
+    employer: Mapped["User"] = relationship("User", foreign_keys=[employer_id])
 
     request_services: Mapped["RequestServiceRelations"] = relationship(
         "RequestServiceRelations", back_populates="request"
