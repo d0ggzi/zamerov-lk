@@ -17,15 +17,15 @@ class Request(BaseModel):
     __tablename__ = "request"
 
     uuid: Mapped[UUID] = mapped_column(Uuid(as_uuid=True), primary_key=True, default=uuid.uuid4, unique=True)
-    user_id: Mapped[UUID] = mapped_column(Uuid(as_uuid=True), ForeignKey("users.uuid"), primary_key=True)
-    description: Mapped[str] = mapped_column(Text, nullable=False, default="")
+    user_id: Mapped[UUID] = mapped_column(Uuid(as_uuid=True), ForeignKey("users.uuid"))
+    description: Mapped[str] = mapped_column(Text, nullable=True, default=None)
     address: Mapped[str] = mapped_column(String(255), nullable=True)
     data: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=True)
     status: Mapped[Status] = mapped_column(Enum(Status))
-    employer_id: Mapped[UUID] = mapped_column(Uuid(as_uuid=True), ForeignKey("users.uuid"), primary_key=True)
+    employer_id: Mapped[UUID] = mapped_column(Uuid(as_uuid=True), ForeignKey("users.uuid"), nullable=True, default=None)
 
     user: Mapped["User"] = relationship("User", back_populates="requests", foreign_keys=[user_id])
-    employer: Mapped["User"] = relationship("User", foreign_keys=[employer_id])
+    employer: Mapped["User"] = relationship("User", back_populates="employed_requests", foreign_keys=[employer_id])
 
     request_services: Mapped["RequestServiceRelations"] = relationship(
         "RequestServiceRelations", back_populates="request"

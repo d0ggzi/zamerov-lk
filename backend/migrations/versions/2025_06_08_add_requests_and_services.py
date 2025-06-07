@@ -1,8 +1,8 @@
 """add requests and services
 
-Revision ID: 12b3c2b00836
+Revision ID: 30e86565af32
 Revises: a1e9a68d77a4
-Create Date: 2025-05-29 00:43:52.482206
+Create Date: 2025-06-08 00:24:25.162472
 
 """
 
@@ -13,7 +13,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = "12b3c2b00836"
+revision: str = "30e86565af32"
 down_revision: Union[str, None] = "a1e9a68d77a4"
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -32,11 +32,11 @@ def upgrade() -> None:
         "request",
         sa.Column("uuid", sa.Uuid(), nullable=False),
         sa.Column("user_id", sa.Uuid(), nullable=False),
-        sa.Column("description", sa.Text(), nullable=False),
+        sa.Column("description", sa.Text(), nullable=True),
         sa.Column("address", sa.String(length=255), nullable=True),
         sa.Column("data", sa.DateTime(timezone=True), nullable=True),
         sa.Column("status", sa.Enum("DRAFT", "READY", "IN_PROGRESS", "FINISHED", name="status"), nullable=False),
-        sa.Column("employer_id", sa.Uuid(), nullable=False),
+        sa.Column("employer_id", sa.Uuid(), nullable=True),
         sa.ForeignKeyConstraint(
             ["employer_id"],
             ["users.uuid"],
@@ -45,7 +45,7 @@ def upgrade() -> None:
             ["user_id"],
             ["users.uuid"],
         ),
-        sa.PrimaryKeyConstraint("uuid", "user_id", "employer_id"),
+        sa.PrimaryKeyConstraint("uuid"),
         sa.UniqueConstraint("uuid"),
     )
     op.create_table(
