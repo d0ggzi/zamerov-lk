@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 
 from src.api.dependencies.request import get_request_service
-from src.api.schemas.request import RequestCreate
+from src.api.schemas.request import RequestCreate, Request
 from src.service.request import RequestService
 
 request_router = APIRouter(prefix="/api/requests", tags=["requests"])

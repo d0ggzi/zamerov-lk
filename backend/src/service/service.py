@@ -24,3 +24,4 @@ class ServiceService:
         service = self.session.execute(select(models.Service).where(models.Service.name == service_name)).scalar_one()
         self.session.delete(service)
         self.session.commit()
+        return Service(id=service.uuid, name=service.name)

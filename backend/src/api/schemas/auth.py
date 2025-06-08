@@ -2,6 +2,11 @@ import uuid
 from pydantic import BaseModel, field_serializer
 
 
+class Role(BaseModel):
+    id: uuid.UUID
+    name: str
+
+
 class UserCreate(BaseModel):
     email: str
     name: str
@@ -13,7 +18,7 @@ class User(BaseModel):
     id: uuid.UUID
     email: str
     name: str
-    role_name: str
+    role: Role
 
     @field_serializer("id")
     def serialize_uuid_id(self, value):

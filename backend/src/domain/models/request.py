@@ -27,19 +27,22 @@ class Request(BaseModel):
     user: Mapped["User"] = relationship("User", back_populates="requests", foreign_keys=[user_id])
     employer: Mapped["User"] = relationship("User", back_populates="employed_requests", foreign_keys=[employer_id])
 
-    request_services: Mapped["RequestServiceRelations"] = relationship(
-        "RequestServiceRelations", back_populates="request"
+    services: Mapped[list["Service"]] = relationship(
+        "Service",
+        secondary="request_service_relation",
+        back_populates="requests",
     )
 
 
-class RequestServiceRelations(BaseModel):
-    __tablename__ = "request_service_relations"
+class RequestServiceRelation(BaseModel):
+    __tablename__ = "request_service_relation"
 
     uuid: Mapped[UUID] = mapped_column(Uuid(as_uuid=True), primary_key=True, default=uuid.uuid4, unique=True)
-    request_id: Mapped[UUID] = mapped_column(Uuid(as_uuid=True), ForeignKey("request.uuid"), primary_key=True)
-    service_id: Mapped[UUID] = mapped_column(Uuid(as_uuid=True), ForeignKey("service.uuid"), primary_key=True)
-
-    request: Mapped["Request"] = relationship("Request", back_populates="request_services")
-    service: Mapped["Service"] = relationship("Service", back_populates="request_services")
+    request_id: Mapped[UUID] = mapped_column(
+        Uuid(as_uuid=True), ForeignKey("request.uuid", ondelete="CASCADE"), primary_key=True
+    )
+    service_id: Mapped[UUID] = mapped_column(
+        Uuid(as_uuid=True), ForeignKey("service.uuid", ondelete="CASCADE"), primary_key=True
+    )
 
     __table_args__ = (UniqueConstraint("request_id", "service_id", name="uq_request_service"),)
