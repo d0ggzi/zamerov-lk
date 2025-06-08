@@ -3,7 +3,7 @@ from pydantic import BaseModel, field_serializer
 
 
 class Role(BaseModel):
-    id: uuid.UUID
+    id: str
     name: str
 
 
@@ -15,7 +15,7 @@ class UserCreate(BaseModel):
 
 
 class User(BaseModel):
-    id: uuid.UUID
+    id: str
     email: str
     name: str
     role: Role

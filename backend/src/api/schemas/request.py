@@ -9,7 +9,7 @@ from src.domain.choices.status import Status
 
 
 class Request(BaseModel):
-    id: uuid.UUID
+    id: str
     user: User
     description: str | None = None
     address: str | None = None
@@ -45,8 +45,8 @@ class Request(BaseModel):
 
 
 class RequestCreate(BaseModel):
-    user_id: uuid.UUID
+    user_id: str
     description: str | None = None
     address: str | None = None
-    employer_id: uuid.UUID | None = None
-    services_ids: list[uuid.UUID]
+    employer_id: str | None = None
+    services_ids: list[str]

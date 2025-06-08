@@ -4,7 +4,7 @@ from pydantic import BaseModel
 
 
 class Service(BaseModel):
-    id: uuid.UUID
+    id: str
     name: str
 
 

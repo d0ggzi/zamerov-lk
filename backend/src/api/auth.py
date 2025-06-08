@@ -19,9 +19,9 @@ user_router = APIRouter(prefix="/api/users", tags=["user"])
 
 
 @auth_router.post("/register")
-async def create_user(user: UserCreate, session: Session = Depends(get_session)):
+async def create_user(user_create: UserCreate, session: Session = Depends(get_session)):
     try:
-        user: User = await user_service.create_user(session, user)
+        user: User = await user_service.create_user(session, user_create)
     except UserAlreadyExistsError as exc:
         raise fastapi.HTTPException(status_code=409, detail="Email already in use") from exc
     except RoleNotFoundError as exc:
@@ -36,12 +36,12 @@ async def list_users(session: Session = Depends(get_session), user=fastapi.Depen
 
 
 @user_router.get("/me", response_model=User)
-async def get_current_user(user=fastapi.Depends(get_current_user)):
+async def get_current_user_api(user=fastapi.Depends(get_current_user)):
     return user
 
 
 @user_router.get("/{user_id}", response_model=User)
-async def get_user(user_id: str, session: Session = Depends(get_session), user=fastapi.Depends(get_current_user)):
+async def get_user(user_id: str, session: Session = Depends(get_session), auth=fastapi.Depends(get_current_user)):
     try:
         user: User = await user_service.get_user_by_id(session, user_id)
     except UserNotFoundError as exc:
@@ -56,8 +56,8 @@ async def edit_user(
     session: Session = Depends(get_session),
     user=fastapi.Depends(get_current_user),
 ):
-    user: User = await user_service.edit_user(session, user_edit, user)
-    return user
+    edited_user: User = await user_service.edit_user(session, user_edit, user)
+    return edited_user
 
 
 @auth_router.post("/token")

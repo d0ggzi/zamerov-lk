@@ -25,10 +25,10 @@ async def get_user_by_email(session: Session, email: str) -> schemas.User:
     if orm_user is None:
         raise UserNotFoundError
     user = schemas.User(
-        id=orm_user.uuid,
+        id=str(orm_user.uuid),
         email=orm_user.email,
         name=orm_user.name,
-        role_name=orm_user.role.name,
+        role=schemas.Role(id=str(orm_user.role.uuid), name=orm_user.role.name),
     )
     return user
 
@@ -38,10 +38,10 @@ async def get_user_by_id(session: Session, user_id: str) -> schemas.User:
     if orm_user is None:
         raise UserNotFoundError
     user = schemas.User(
-        id=orm_user.uuid,
+        id=str(orm_user.uuid),
         email=orm_user.email,
         name=orm_user.name,
-        role_name=orm_user.role.name,
+        role=schemas.Role(id=str(orm_user.role.uuid), name=orm_user.role.name),
     )
     return user
 
@@ -50,10 +50,10 @@ async def list_users(session: Session) -> list[User]:
     orm_users = session.execute(select(models.User)).scalars().all()
     users = [
         schemas.User(
-            id=orm_user.uuid,
+            id=str(orm_user.uuid),
             email=orm_user.email,
             name=orm_user.name,
-            role_name=orm_user.role.name,
+            role=schemas.Role(id=str(orm_user.role.uuid), name=orm_user.role.name),
         )
         for orm_user in orm_users
     ]
@@ -61,7 +61,7 @@ async def list_users(session: Session) -> list[User]:
 
 
 async def edit_user(session: Session, user_edit: schemas.UserEdit, user: schemas.User) -> schemas.User:
-    orm_user = session.query(models.User).filter_by(email=user.email).first()
+    orm_user = session.query(models.User).filter_by(email=user.email).one()
     if user_edit.name is not None:
         orm_user.name = user_edit.name
     if user_edit.email is not None:
@@ -69,20 +69,20 @@ async def edit_user(session: Session, user_edit: schemas.UserEdit, user: schemas
     if user_edit.password is not None:
         orm_user.password = hash_password(user_edit.password)
     if user_edit.role_name is not None:
-        orm_user.role = session.query(models.Role).filter_by(name=user_edit.role_name).first()
+        orm_user.role = session.query(models.Role).filter_by(name=user_edit.role_name).one()
     session.add(orm_user)
     session.commit()
     user_res = schemas.User(
-        id=orm_user.uuid,
+        id=str(orm_user.uuid),
         email=orm_user.email,
         name=orm_user.name,
-        role_name=orm_user.role.name,
+        role=schemas.Role(id=str(orm_user.role.uuid), name=orm_user.role.name),
     )
     return user_res
 
 
 async def create_user(session: Session, user: schemas.UserCreate) -> schemas.User:
-    role = session.query(models.Role).filter_by(name=user.role_name).first()
+    role = session.query(models.Role).filter_by(name=user.role_name).one_or_none()
     if role is None:
         raise RoleNotFoundError
     hashed_password = hash_password(user.password)
@@ -94,10 +94,10 @@ async def create_user(session: Session, user: schemas.UserCreate) -> schemas.Use
         raise UserAlreadyExistsError from exc
 
     user_res = schemas.User(
-        id=orm_user.uuid,
+        id=str(orm_user.uuid),
         email=user.email,
         name=user.name,
-        role_name=user.role_name,
+        role=schemas.Role(id=str(orm_user.role.uuid), name=orm_user.role.name),
     )
     return user_res
 
@@ -107,10 +107,10 @@ async def authenticate_user(session: Session, email: str, password: str) -> sche
     if orm_user is None or not check_password(password, orm_user.password):
         raise BadCredentials
     user_res = schemas.User(
-        id=orm_user.uuid,
+        id=str(orm_user.uuid),
         email=email,
         name=orm_user.name,
-        role_name=orm_user.role.name,
+        role=schemas.Role(id=str(orm_user.role.uuid), name=orm_user.role.name),
     )
     return user_res
 

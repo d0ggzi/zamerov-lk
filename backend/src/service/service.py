@@ -18,10 +18,10 @@ class ServiceService:
         service = models.Service(name=service_create.name)
         self.session.add(service)
         self.session.commit()
-        return Service(id=service.uuid, name=service.name)
+        return Service(id=str(service.uuid), name=service.name)
 
     def delete(self, service_name: str):
         service = self.session.execute(select(models.Service).where(models.Service.name == service_name)).scalar_one()
         self.session.delete(service)
         self.session.commit()
-        return Service(id=service.uuid, name=service.name)
+        return Service(id=str(service.uuid), name=service.name)
