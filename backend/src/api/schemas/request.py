@@ -48,6 +48,7 @@ class RequestCreate(BaseModel):
     user_id: str
     description: str | None = None
     address: str | None = None
+    data: datetime | None = None
     employer_id: str | None = None
     services_ids: list[str]
 

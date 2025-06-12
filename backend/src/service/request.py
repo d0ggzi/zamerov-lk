@@ -27,7 +27,7 @@ class RequestService:
             user_id=request_create.user_id,
             description=request_create.description,
             address=request_create.address,
-            data=datetime.now(),
+            data=request_create.data,
             status=Status("draft"),
             employer_id=request_create.employer_id,
         )

@@ -16,3 +16,7 @@ class BadCredentials(Exception):
 
 class RequestNotFoundError(Exception):
     """Заявка не найдена"""
+
+
+class ServiceNotFoundError(Exception):
+    """Услуга не найдена"""
