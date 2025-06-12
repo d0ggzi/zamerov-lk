@@ -12,3 +12,7 @@ class RoleNotFoundError(Exception):
 
 class BadCredentials(Exception):
     """Неверные данные для входа"""
+
+
+class RequestNotFoundError(Exception):
+    """Заявка не найдена"""

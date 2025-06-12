@@ -1,7 +1,9 @@
+import fastapi
 from fastapi import APIRouter, Depends
 
 from src.api.dependencies.request import get_request_service
-from src.api.schemas.request import RequestCreate, Request
+from src.api.schemas.request import RequestCreate, RequestEdit
+from src.service.exceptions import UserNotFoundError, RequestNotFoundError
 from src.service.request import RequestService
 
 request_router = APIRouter(prefix="/api/requests", tags=["requests"])
@@ -9,14 +11,33 @@ request_router = APIRouter(prefix="/api/requests", tags=["requests"])
 
 @request_router.get("/")
 async def list_requests(request_service: RequestService = Depends(get_request_service)):
-    return request_service.list()
+    return await request_service.list()
 
 
 @request_router.post("/")
 async def create_request(request_create: RequestCreate, request_service: RequestService = Depends(get_request_service)):
-    return request_service.create(request_create=request_create)
+    return await request_service.create(request_create=request_create)
+
+
+@request_router.patch("/{request_id}")
+async def edit_request(
+    request_id: str, request_edit: RequestEdit, request_service: RequestService = Depends(get_request_service)
+):
+    try:
+        request = await request_service.edit(request_id=request_id, request_edit=request_edit)
+    except UserNotFoundError as exc:
+        raise fastapi.HTTPException(status_code=404, detail="User not found") from exc
+    except RequestNotFoundError as exc:
+        raise fastapi.HTTPException(status_code=404, detail="Request not found") from exc
+
+    return request
 
 
 @request_router.delete("/{request_id}")
 async def delete_request(request_id: str, request_service: RequestService = Depends(get_request_service)):
-    return request_service.delete(request_id=request_id)
+    try:
+        request = await request_service.delete(request_id=request_id)
+    except RequestNotFoundError as exc:
+        raise fastapi.HTTPException(status_code=404, detail="Request not found") from exc
+
+    return request
