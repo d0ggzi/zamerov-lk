@@ -4,6 +4,7 @@ import DashboardPage from "../pages/dashboard-page/DashboardPage.jsx";
 import RegisterPage from "../pages/register-page/RegisterPage.jsx";
 import ProtectedRoute from "../../components/protected-route/ProtectedRoute.jsx";
 import RequestCreatePage from "../pages/request-create-page/RequestCreatePage.jsx";
+import RequestEditPage from "../pages/request-edit-page/RequestEditPage.jsx";
 
 export default function App() {
     return (
@@ -23,6 +24,14 @@ export default function App() {
                 element={
                     <ProtectedRoute requiredRoles={["manager", "admin"]}>
                         <RequestCreatePage/>
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/requests/edit/:id"
+                element={
+                    <ProtectedRoute requiredRoles={["manager", "admin"]}>
+                        <RequestEditPage/>
                     </ProtectedRoute>
                 }
             />
