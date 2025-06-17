@@ -18,7 +18,7 @@ export default function LoginPage() {
     formData.append("password", password);
 
     try {
-      const response = await fetch("http://localhost:8080/api/auth/token", {
+      const response = await fetch("/api/auth/token", {
         method: "POST",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",

@@ -14,7 +14,7 @@ export default function RequestCreatePage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("http://localhost:8080/api/services/", {
+    fetch("/api/services/", {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => res.json())
@@ -32,7 +32,7 @@ export default function RequestCreatePage() {
     };
 
     try {
-      const res = await fetch("http://localhost:8080/api/requests/", {
+      const res = await fetch("/api/requests/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

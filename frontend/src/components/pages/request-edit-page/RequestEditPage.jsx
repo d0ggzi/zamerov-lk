@@ -14,7 +14,7 @@ export default function RequestEditPage() {
   const [status, setStatus] = useState("");
 
   useEffect(() => {
-    fetch(`http://localhost:8080/api/requests/${id}`, {
+    fetch(`/api/requests/${id}`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => res.json())
@@ -37,7 +37,7 @@ export default function RequestEditPage() {
     };
 
     try {
-      const res = await fetch(`http://localhost:8080/api/requests/${id}`, {
+      const res = await fetch(`/api/requests/${id}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",

@@ -11,14 +11,14 @@ export default function DashboardPage() {
   const [requests, setRequests] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:8080/api/users/me", {
+    fetch("/api/users/me", {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => res.json())
       .then((data) => setMe(data))
       .catch(console.error);
 
-    fetch("http://localhost:8080/api/requests/", {
+    fetch("/api/requests/", {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => res.json())
