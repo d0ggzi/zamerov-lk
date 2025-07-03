@@ -46,7 +46,7 @@ export default function RequestEditPage() {
         body: JSON.stringify(payload),
       });
       if (!res.ok) throw new Error("Ошибка обновления заявки");
-      navigate("/");
+      navigate("/requests");
     } catch (err) {
       alert(err.message);
     }
