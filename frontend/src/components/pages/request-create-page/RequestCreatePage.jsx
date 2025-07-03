@@ -1,8 +1,8 @@
 import {useState, useEffect, useContext} from "react";
 import { useAuth } from "../../../context/useAuth";
 import { useNavigate } from "react-router-dom";
-import { inputStyle, buttonPrimary } from "./styles";
 import {UserContext} from "../../../context/user-context.jsx";
+import {buttonPrimary, inputStyle} from "../../themes/default.js";
 
 export default function RequestCreatePage() {
   const [token,] = useContext(UserContext);

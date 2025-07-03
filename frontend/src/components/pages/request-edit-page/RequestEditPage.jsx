@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useAuth } from "../../../context/useAuth";
-import { inputStyle, buttonPrimary } from "./styles";
+import {buttonPrimary, inputStyle} from "../../themes/default.js";
 
 export default function RequestEditPage() {
   const { id } = useParams();

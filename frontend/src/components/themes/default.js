@@ -1,17 +1,4 @@
-export const defaultTheme = {
-    fontColorBlack: "#333333",
-    fontColorGrey: "#54595E",
-    colorWhite: "#ffffff",
-    headerColor: '#BDD3FF',
-    errorColor: '#DC3545',
-    mainBackgroundColor: '#E9ECEF',
-    activeTabColor: '#DEE2E6',
-    unactiveTabColor: '#CED4DA',
-    buttonColor: '#007bff',
-    fontFamily: '"Involve", "Arial", sans-serif',
-    fontSizeDefault: "16px",
-    pageWidth: "1400px",
-    headerHeight: "60px",
-    footerHeight: "60px"
-  };
-  
+export const inputStyle =
+  "w-full p-2 mb-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-custom-blue";
+export const buttonPrimary =
+  "w-full bg-custom-black text-custom-yellow p-2 rounded hover:bg-black";
