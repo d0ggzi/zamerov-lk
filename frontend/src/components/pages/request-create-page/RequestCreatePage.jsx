@@ -25,7 +25,7 @@ export default function RequestCreatePage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const payload = {
-      user_id: user.sub,
+      user_id: user.id,
       description,
       address,
       services_ids: selectedServices,
@@ -41,7 +41,7 @@ export default function RequestCreatePage() {
         body: JSON.stringify(payload),
       });
       if (!res.ok) throw new Error("Ошибка создания заявки");
-      navigate("/");
+      navigate("/requests");
     } catch (err) {
       alert(err.message);
     }

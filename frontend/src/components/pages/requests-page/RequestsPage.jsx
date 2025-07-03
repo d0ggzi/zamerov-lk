@@ -7,22 +7,14 @@ import Request from "../../../components/blocks/request/Request.jsx";
 export default function RequestsPage() {
     const [token, setToken] = useContext(UserContext);
     const {user} = useAuth();
-    const [me, setMe] = useState(null);
     const [requests, setRequests] = useState([]);
 
     useEffect(() => {
-        fetch("/api/users/me", {
-            headers: {Authorization: `Bearer ${token}`},
-        })
-            .then((res) => res.json())
-            .then((data) => setMe(data))
-            .catch(console.error);
-
         fetch("/api/requests/", {
             headers: {Authorization: `Bearer ${token}`},
         })
             .then((res) => res.json())
-            .then((data) => setRequests(data.filter((r) => r.user_id === user?.sub)))
+            .then((data) => setRequests(data.filter((r) => r.user.id === user.id)))
             .catch(console.error);
     }, [token]);
 

@@ -1,32 +1,6 @@
-import {useContext, useEffect, useState} from "react";
 import {Link} from "react-router-dom";
-import {UserContext} from "../../../context/user-context.jsx";
-import {useAuth} from "../../../context/useAuth.jsx";
-import Request from "../../../components/blocks/request/Request.jsx";
 
 export default function DashboardPage() {
-    const [token, setToken] = useContext(UserContext);
-    const {user} = useAuth();
-    const [me, setMe] = useState(null);
-    const [requests, setRequests] = useState([]);
-
-    useEffect(() => {
-        fetch("/api/users/me", {
-            headers: {Authorization: `Bearer ${token}`},
-        })
-            .then((res) => res.json())
-            .then((data) => setMe(data))
-            .catch(console.error);
-
-        fetch("/api/requests/", {
-            headers: {Authorization: `Bearer ${token}`},
-        })
-            .then((res) => res.json())
-            .then((data) => setRequests(data.filter((r) => r.user_id === user?.sub)))
-            .catch(console.error);
-    }, [token]);
-
-
     return (
         <div className="grid grid-cols-3 gap-4">
             <Link to="/"
