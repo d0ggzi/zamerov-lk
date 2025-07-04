@@ -2,38 +2,41 @@ import {useContext, useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import {UserContext} from "../../../context/user-context.jsx";
 import {useAuth} from "../../../context/useAuth.jsx";
-import Request from "../../../components/blocks/request/Request.jsx";
+import Service from "../../blocks/service/Service.jsx";
 
-export default function RequestsPage() {
+export default function ServicesPage() {
     const [token, setToken] = useContext(UserContext);
     const {user} = useAuth();
-    const [requests, setRequests] = useState([]);
+    const [services, setServices] = useState([]);
 
     useEffect(() => {
-        fetch("/api/requests/", {
+        fetch("/api/services/", {
             headers: {Authorization: `Bearer ${token}`},
         })
             .then((res) => res.json())
-            .then((data) => setRequests(data.filter((r) => r.user.id === user.id)))
+            .then((data) => setServices(data))
             .catch(console.error);
     }, [token]);
-
 
     return (
         <>
             <div className="grid md:grid-cols-4 gap-7 mb-4 md:pl-10 md:pr-10 md:pt-10">
-                {requests.length === 0 ? (
-                    <p className="text-gray-500">Нет заявок</p>
-                ) : (
-                    requests.map((req) => (
-                        <Request key={req.id} request={req}/>
-                    ))
-                )}
+                <div className="space-y-2">
+                    {services.length === 0 ? (
+                        <p className="text-gray-500">Нет услуг</p>
+                    ) : (
+                        services.map((service) => (
+                            <Service key={service.id} service={service}/>
+                        ))
+                    )}
+                </div>
+
+
             </div>
             {["manager", "admin"].includes(user?.role?.name) && (
-                <Link to="/requests/new"
+                <Link to="/services/new"
                       className="flex flex-row justify-center items-center mt-4 text-blue-600 hover:underline">
-                    + Создать заявку
+                    + Создать услугу
                 </Link>
             )}
         </>

@@ -1,69 +1,69 @@
 import {Link} from "react-router-dom";
-import {dashboardCellBlock, dashboardCellText} from "./styles.js";
+import {cellBlock, cellText} from "./styles.js";
 
 export default function DashboardPage() {
     return (
-        <div className="grid grid-cols-3 gap-7 md:pl-10 md:pr-10 md:pt-10">
+        <div className="grid md:grid-cols-3 gap-7 md:pl-10 md:pr-10 md:pt-10">
             <Link to="/"
-                  className={dashboardCellBlock}>
-                <p className={dashboardCellText}>
+                  className={cellBlock}>
+                <p className={cellText}>
                     Заказы
                 </p>
             </Link>
-            <Link to="/"
-                  className={dashboardCellBlock}>
-                <p className={dashboardCellText}>
+            <Link to="/requests"
+                  className={cellBlock}>
+                <p className={cellText}>
                     Заявки
                 </p>
             </Link>
-            <Link to="/"
-                  className={dashboardCellBlock}>
-                <p className={dashboardCellText}>
+            <Link to="/services"
+                  className={cellBlock}>
+                <p className={cellText}>
                     Услуги
                 </p>
             </Link>
 
             <Link to="/"
-                  className={dashboardCellBlock}>
-                <p className={dashboardCellText}>
+                  className={cellBlock}>
+                <p className={cellText}>
                     Споры
                 </p>
             </Link>
             <Link to="/"
-                  className={dashboardCellBlock}>
-                <p className={dashboardCellText}>
+                  className={cellBlock}>
+                <p className={cellText}>
                     Документы
                 </p>
             </Link>
             <Link to="/"
-                  className={dashboardCellBlock}>
-                <p className={dashboardCellText}>
+                  className={cellBlock}>
+                <p className={cellText}>
                     Календарь
                 </p>
             </Link>
 
             <Link to="/"
-                  className={dashboardCellBlock}>
-                <p className={dashboardCellText}>
+                  className={cellBlock}>
+                <p className={cellText}>
                     Настройки
                 </p>
             </Link>
             <Link to="/"
-                  className={dashboardCellBlock}>
-                <p className={dashboardCellText}>
+                  className={cellBlock}>
+                <p className={cellText}>
                     Частые вопросы
                 </p>
             </Link>
             <Link to="/"
-                  className={dashboardCellBlock}>
-                <p className={dashboardCellText}>
+                  className={cellBlock}>
+                <p className={cellText}>
                     Оплата
                 </p>
             </Link>
 
             <Link to="/"
-                  className={dashboardCellBlock}>
-                <p className={dashboardCellText}>
+                  className={cellBlock}>
+                <p className={cellText}>
                     Чат
                 </p>
             </Link>

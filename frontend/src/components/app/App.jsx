@@ -7,6 +7,8 @@ import RequestCreatePage from "../pages/request-create-page/RequestCreatePage.js
 import RequestEditPage from "../pages/request-edit-page/RequestEditPage.jsx";
 import PageWrapper from "../layout/page-wrapper/PageWrapper.jsx";
 import RequestsPage from "../pages/requests-page/RequestsPage.jsx";
+import ServicesPage from "../pages/services-page/ServicesPage.jsx";
+import ServiceCreatePage from "../pages/service-create-page/ServiceCreatePage.jsx";
 
 export default function App() {
     return (
@@ -25,7 +27,7 @@ export default function App() {
                 <Route
                     path="/requests"
                     element={
-                        <ProtectedRoute requiredRoles={["manager", "admin"]}>
+                        <ProtectedRoute>
                             <RequestsPage/>
                         </ProtectedRoute>
                     }
@@ -41,8 +43,24 @@ export default function App() {
                 <Route
                     path="/requests/edit/:id"
                     element={
-                        <ProtectedRoute requiredRoles={["manager", "admin"]}>
+                        <ProtectedRoute>
                             <RequestEditPage/>
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/services"
+                    element={
+                        <ProtectedRoute>
+                            <ServicesPage/>
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/services/new"
+                    element={
+                        <ProtectedRoute requiredRoles={["manager", "admin"]}>
+                            <ServiceCreatePage/>
                         </ProtectedRoute>
                     }
                 />
