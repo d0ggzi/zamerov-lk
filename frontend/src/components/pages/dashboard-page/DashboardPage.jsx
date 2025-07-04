@@ -1,68 +1,69 @@
 import {Link} from "react-router-dom";
+import {dashboardCellBlock, dashboardCellText} from "./styles.js";
 
 export default function DashboardPage() {
     return (
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-3 gap-7 md:pl-10 md:pr-10 md:pt-10">
             <Link to="/"
-                  className="flex items-center border-3 border-custom-yellow justify-center h-34 rounded-sm bg-gray-50 dark:bg-gray-100">
-                <p className="text-2xl text-gray-400 dark:text-custom-black">
+                  className={dashboardCellBlock}>
+                <p className={dashboardCellText}>
                     Заказы
                 </p>
             </Link>
-            <Link to="/requests"
-                  className="flex items-center border-3 border-custom-yellow justify-center h-34 rounded-sm bg-gray-50 dark:bg-gray-100">
-                <p className="text-2xl text-gray-400 dark:text-custom-black">
+            <Link to="/"
+                  className={dashboardCellBlock}>
+                <p className={dashboardCellText}>
                     Заявки
                 </p>
             </Link>
             <Link to="/"
-                  className="flex items-center border-3 border-custom-yellow justify-center h-34 rounded-sm bg-gray-50 dark:bg-gray-100">
-                <p className="text-2xl text-gray-400 dark:text-custom-black">
+                  className={dashboardCellBlock}>
+                <p className={dashboardCellText}>
                     Услуги
                 </p>
             </Link>
 
             <Link to="/"
-                  className="flex items-center border-3 border-custom-yellow justify-center h-34 rounded-sm bg-gray-50 dark:bg-gray-100">
-                <p className="text-2xl text-gray-400 dark:text-custom-black">
+                  className={dashboardCellBlock}>
+                <p className={dashboardCellText}>
                     Споры
                 </p>
             </Link>
             <Link to="/"
-                  className="flex items-center border-3 border-custom-yellow justify-center h-34 rounded-sm bg-gray-50 dark:bg-gray-100">
-                <p className="text-2xl text-gray-400 dark:text-custom-black">
+                  className={dashboardCellBlock}>
+                <p className={dashboardCellText}>
                     Документы
                 </p>
             </Link>
             <Link to="/"
-                  className="flex items-center border-3 border-custom-yellow justify-center h-34 rounded-sm bg-gray-50 dark:bg-gray-100">
-                <p className="text-2xl text-gray-400 dark:text-custom-black">
+                  className={dashboardCellBlock}>
+                <p className={dashboardCellText}>
                     Календарь
                 </p>
             </Link>
 
             <Link to="/"
-                  className="flex items-center border-3 border-custom-yellow justify-center h-34 rounded-sm bg-gray-50 dark:bg-gray-100">
-                <p className="text-2xl text-gray-400 dark:text-custom-black">
+                  className={dashboardCellBlock}>
+                <p className={dashboardCellText}>
                     Настройки
                 </p>
             </Link>
             <Link to="/"
-                  className="flex items-center border-3 border-custom-yellow justify-center h-34 rounded-sm bg-gray-50 dark:bg-gray-100">
-                <p className="text-2xl text-gray-400 dark:text-custom-black">
+                  className={dashboardCellBlock}>
+                <p className={dashboardCellText}>
                     Частые вопросы
                 </p>
             </Link>
             <Link to="/"
-                  className="flex items-center border-3 border-custom-yellow justify-center h-34 rounded-sm bg-gray-50 dark:bg-gray-100">
-                <p className="text-2xl text-gray-400 dark:text-custom-black">
+                  className={dashboardCellBlock}>
+                <p className={dashboardCellText}>
                     Оплата
                 </p>
             </Link>
 
             <Link to="/"
-                  className="flex items-center border-3 border-custom-yellow justify-center h-34 rounded-sm bg-gray-50 dark:bg-gray-100">
-                <p className="text-2xl text-gray-400 dark:text-custom-black">
+                  className={dashboardCellBlock}>
+                <p className={dashboardCellText}>
                     Чат
                 </p>
             </Link>
