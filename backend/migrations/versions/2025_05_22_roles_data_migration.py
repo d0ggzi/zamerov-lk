@@ -28,7 +28,6 @@ def upgrade() -> None:
     session.execute(
         Role.__table__.insert().values(
             [
-                {"name": "user"},
                 {"name": "employer"},
                 {"name": "manager"},
                 {"name": "admin"},
@@ -43,7 +42,6 @@ def downgrade() -> None:
     session.execute(
         sa.delete(Role).where(
             or_(
-                Role.name == "user",
                 Role.name == "employer",
                 Role.name == "manager",
                 Role.name == "admin",

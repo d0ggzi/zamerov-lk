@@ -7,7 +7,7 @@ from sqlalchemy import Uuid, String, ForeignKey, Text, DateTime, Enum, UniqueCon
 from sqlalchemy.orm import relationship, mapped_column, Mapped
 
 from src.domain.base import BaseModel
-from src.domain.choices.status import Status
+from src.domain.choices.status import RequestStatus
 
 if TYPE_CHECKING:
     from src.domain.models import Service, User
@@ -21,7 +21,7 @@ class Request(BaseModel):
     description: Mapped[str] = mapped_column(Text, nullable=True, default=None)
     address: Mapped[str] = mapped_column(String(255), nullable=True)
     data: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=True)
-    status: Mapped[Status] = mapped_column(Enum(Status))
+    status: Mapped[RequestStatus] = mapped_column(Enum(RequestStatus))
     employer_id: Mapped[UUID] = mapped_column(Uuid(as_uuid=True), ForeignKey("users.uuid"), nullable=True, default=None)
 
     user: Mapped["User"] = relationship("User", back_populates="requests", foreign_keys=[user_id])

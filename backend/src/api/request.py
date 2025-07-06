@@ -1,6 +1,7 @@
 import fastapi
 from fastapi import APIRouter, Depends
 
+from src.api.auth import user_router
 from src.api.dependencies.request import get_request_service
 from src.api.schemas.request import RequestCreate, RequestEdit
 from src.service.exceptions import UserNotFoundError, RequestNotFoundError
@@ -14,9 +15,24 @@ async def list_requests(request_service: RequestService = Depends(get_request_se
     return await request_service.list()
 
 
+@user_router.get("/{user_id}/requests")
+async def list_user_requests(user_id: str, request_service: RequestService = Depends(get_request_service)):
+    return await request_service.list(user_id=user_id)
+
+
 @request_router.post("/")
 async def create_request(request_create: RequestCreate, request_service: RequestService = Depends(get_request_service)):
     return await request_service.create(request_create=request_create)
+
+
+@request_router.get("/{request_id}")
+async def get_request(request_id: str, request_service: RequestService = Depends(get_request_service)):
+    try:
+        request = await request_service.get(request_id=request_id)
+    except RequestNotFoundError as exc:
+        raise fastapi.HTTPException(status_code=404, detail="Request not found") from exc
+
+    return request
 
 
 @request_router.patch("/{request_id}")

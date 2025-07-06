@@ -9,7 +9,7 @@ from src.api.schemas import User, Service
 from src.api.schemas.auth import Role
 from src.api.schemas.request import RequestCreate, Request, RequestEdit
 from src.domain import models, choices
-from src.domain.choices.status import Status
+from src.domain.choices.status import RequestStatus
 from src.service.exceptions import UserNotFoundError, RequestNotFoundError
 
 
@@ -17,10 +17,20 @@ class RequestService:
     def __init__(self, session: Session):
         self.session = session
 
-    async def list(self):
-        requests = self.session.execute(select(models.Request)).scalars().all()
+    async def list(self, user_id: str | None = None):
+        query = select(models.Request)
+        if user_id is not None:
+            query = query.where(models.Request.user_id == user_id)
+        requests = self.session.execute(query).scalars().all()
         schema_requests = [Request.from_orm_model(request) for request in requests]
         return schema_requests
+
+    async def get(self, request_id: str):
+        try:
+            request = self.session.execute(select(models.Request).where(models.Request.uuid == request_id)).scalar_one()
+        except NoResultFound:
+            raise RequestNotFoundError
+        return Request.from_orm_model(request)
 
     async def create(self, request_create: RequestCreate):
         request = models.Request(
@@ -28,7 +38,7 @@ class RequestService:
             description=request_create.description,
             address=request_create.address,
             data=request_create.data,
-            status=Status("draft"),
+            status=RequestStatus("draft"),
             employer_id=request_create.employer_id,
         )
         self.session.add(request)

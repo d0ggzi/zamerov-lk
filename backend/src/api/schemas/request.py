@@ -5,7 +5,7 @@ from pydantic import BaseModel
 
 from src.api.schemas import Service, User
 from src.api.schemas.auth import Role
-from src.domain.choices.status import Status
+from src.domain.choices.status import RequestStatus
 
 
 class Request(BaseModel):
@@ -14,7 +14,7 @@ class Request(BaseModel):
     description: str | None = None
     address: str | None = None
     data: datetime | None = None
-    status: Status
+    status: RequestStatus
     employer: User | None = None
     services: list[Service]
 
@@ -57,6 +57,6 @@ class RequestEdit(BaseModel):
     description: str | None = None
     address: str | None = None
     data: datetime | None = None
-    status: Status | None = None
+    status: RequestStatus | None = None
     employer_id: str | None = None
     services_ids: list[str] | None = None
