@@ -1,8 +1,8 @@
 import {useContext, useEffect, useState} from "react";
 import {Link} from "react-router-dom";
-import {UserContext} from "../../../context/user-context.jsx";
-import {useAuth} from "../../../context/useAuth.jsx";
-import Request from "../../../components/blocks/request/Request.jsx";
+import {UserContext} from "../../../../context/user-context.jsx";
+import {useAuth} from "../../../../context/useAuth.jsx";
+import Request from "../../../blocks/request/Request.jsx";
 
 export default function RequestsPage() {
     const [token, setToken] = useContext(UserContext);
@@ -10,11 +10,11 @@ export default function RequestsPage() {
     const [requests, setRequests] = useState([]);
 
     useEffect(() => {
-        fetch("/api/requests/", {
+        fetch(`/api/users/${user.id}/requests`, {
             headers: {Authorization: `Bearer ${token}`},
         })
             .then((res) => res.json())
-            .then((data) => setRequests(data.filter((r) => r.user.id === user.id)))
+            .then((data) => setRequests(data))
             .catch(console.error);
     }, [token]);
 

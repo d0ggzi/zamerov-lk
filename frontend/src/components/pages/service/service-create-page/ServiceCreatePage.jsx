@@ -1,7 +1,7 @@
 import {useState, useEffect, useContext} from "react";
 import { useNavigate } from "react-router-dom";
-import {UserContext} from "../../../context/user-context.jsx";
-import {buttonPrimary, inputStyle} from "../../themes/default.js";
+import {UserContext} from "../../../../context/user-context.jsx";
+import {buttonPrimary, inputStyle} from "../../../themes/default.js";
 
 export default function ServiceCreatePage() {
   const [token,] = useContext(UserContext);

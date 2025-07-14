@@ -1,14 +1,16 @@
 import {Routes, Route} from "react-router-dom";
-import LoginPage from "../pages/login-page/LoginPage.jsx";
+import LoginPage from "../pages/auth/login-page/LoginPage.jsx";
 import DashboardPage from "../pages/dashboard-page/DashboardPage.jsx";
-import RegisterPage from "../pages/register-page/RegisterPage.jsx";
+import RegisterPage from "../pages/auth/register-page/RegisterPage.jsx";
 import ProtectedRoute from "../../components/protected-route/ProtectedRoute.jsx";
-import RequestCreatePage from "../pages/request-create-page/RequestCreatePage.jsx";
-import RequestEditPage from "../pages/request-edit-page/RequestEditPage.jsx";
+import RequestCreatePage from "../pages/request/request-create-page/RequestCreatePage.jsx";
+import RequestEditPage from "../pages/request/request-edit-page/RequestEditPage.jsx";
 import PageWrapper from "../layout/page-wrapper/PageWrapper.jsx";
-import RequestsPage from "../pages/requests-page/RequestsPage.jsx";
-import ServicesPage from "../pages/services-page/ServicesPage.jsx";
-import ServiceCreatePage from "../pages/service-create-page/ServiceCreatePage.jsx";
+import RequestsPage from "../pages/request/requests-page/RequestsPage.jsx";
+import ServicesPage from "../pages/service/services-page/ServicesPage.jsx";
+import ServiceCreatePage from "../pages/service/service-create-page/ServiceCreatePage.jsx";
+import OrderPage from "../pages/order/order-page/OrderPage.jsx";
+import OrderEditPage from "../pages/order/order-edit-page/OrderEditPage.jsx";
 
 export default function App() {
     return (
@@ -61,6 +63,22 @@ export default function App() {
                     element={
                         <ProtectedRoute requiredRoles={["manager", "admin"]}>
                             <ServiceCreatePage/>
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/orders"
+                    element={
+                        <ProtectedRoute>
+                            <OrderPage/>
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/orders/edit/:id"
+                    element={
+                        <ProtectedRoute>
+                            <OrderEditPage/>
                         </ProtectedRoute>
                     }
                 />

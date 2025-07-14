@@ -4,7 +4,7 @@ import {cellBlock, cellText} from "./styles.js";
 export default function DashboardPage() {
     return (
         <div className="grid md:grid-cols-3 gap-7 md:pl-10 md:pr-10 md:pt-10">
-            <Link to="/"
+            <Link to="/orders"
                   className={cellBlock}>
                 <p className={cellText}>
                     Заказы

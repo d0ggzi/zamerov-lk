@@ -1,0 +1,1 @@
+export const cardStyle = "bg-white p-4 rounded shadow";

@@ -1,8 +1,10 @@
 import {useContext} from "react";
 import {UserContext} from "../../../context/user-context.jsx";
+import {useAuth} from "../../../context/useAuth.jsx";
 
 function Nav () {
     const [token, setToken] = useContext(UserContext);
+    const { user } = useAuth();
     const logout = () => setToken(null);
 
     return (
@@ -23,7 +25,7 @@ function Nav () {
                         </button>
                         <a href="#" className="flex ms-2 md:me-24">
                             <img
-                                src="/assets/images/zamerov.jpg"
+                                src="/assets/images/zamerov.svg"
                                 className="h-8 me-3"
                                 alt="FlowBite Logo"/>
                             {/*<span className="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-custom-yellow">Личный кабинет</span>*/}
@@ -46,11 +48,11 @@ function Nav () {
                                 id="dropdown-user">
                                 <div className="px-4 py-3" role="none">
                                     <p className="text-sm text-gray-900 dark:text-white" role="none">
-                                        Павел
+                                        {user.name}
                                     </p>
                                     <p className="text-sm font-medium text-gray-900 truncate dark:text-gray-300"
                                        role="none">
-                                        pavel@mail.ru
+                                        {user.email}
                                     </p>
                                 </div>
                                 <ul className="py-1" role="none">

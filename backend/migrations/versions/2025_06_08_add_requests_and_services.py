@@ -35,7 +35,7 @@ def upgrade() -> None:
         sa.Column("description", sa.Text(), nullable=True),
         sa.Column("address", sa.String(length=255), nullable=True),
         sa.Column("data", sa.DateTime(timezone=True), nullable=True),
-        sa.Column("status", sa.Enum("DRAFT", "READY", "IN_PROGRESS", "FINISHED", name="status"), nullable=False),
+        sa.Column("status", sa.String(length=50), nullable=False),
         sa.Column("employer_id", sa.Uuid(), nullable=True),
         sa.ForeignKeyConstraint(
             ["employer_id"],
@@ -67,4 +67,3 @@ def downgrade() -> None:
     op.drop_table("request_service_relation")
     op.drop_table("request")
     op.drop_table("service")
-    op.execute("DROP TYPE IF EXISTS status")

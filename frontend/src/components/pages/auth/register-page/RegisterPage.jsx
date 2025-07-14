@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import {buttonPrimary, inputStyle} from "../../themes/default.js";
+import {buttonPrimary, inputStyle} from "../../../themes/default.js";
 
 export default function RegisterPage() {
   const [name, setName] = useState("");

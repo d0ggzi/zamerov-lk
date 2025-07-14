@@ -1,7 +1,7 @@
 import {useContext, useState} from "react";
 import { useNavigate, Link } from "react-router-dom";
-import {UserContext} from "../../../context/user-context.jsx";
-import {buttonPrimary, inputStyle} from "../../themes/default.js";
+import {UserContext} from "../../../../context/user-context.jsx";
+import {buttonPrimary, inputStyle} from "../../../themes/default.js";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");

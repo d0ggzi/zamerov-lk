@@ -1,8 +1,8 @@
 import {useContext, useEffect, useState} from "react";
 import {Link} from "react-router-dom";
-import {UserContext} from "../../../context/user-context.jsx";
-import {useAuth} from "../../../context/useAuth.jsx";
-import Service from "../../blocks/service/Service.jsx";
+import {UserContext} from "../../../../context/user-context.jsx";
+import {useAuth} from "../../../../context/useAuth.jsx";
+import Service from "../../../blocks/service/Service.jsx";
 
 export default function ServicesPage() {
     const [token, setToken] = useContext(UserContext);

@@ -1,9 +1,9 @@
 import {useState, useEffect, useContext} from "react";
-import {useAuth} from "../../../context/useAuth";
+import {useAuth} from "../../../../context/useAuth.jsx";
 import {useNavigate} from "react-router-dom";
-import {UserContext} from "../../../context/user-context.jsx";
-import {buttonPrimary, inputStyle} from "../../themes/default.js";
-import MultiSelectDropdown from "../../blocks/multi-select-dropdown/MultiSelectDropdown.jsx";
+import {UserContext} from "../../../../context/user-context.jsx";
+import {buttonPrimary, inputStyle} from "../../../themes/default.js";
+import MultiSelectDropdown from "../../../blocks/multi-select-dropdown/MultiSelectDropdown.jsx";
 
 export default function RequestCreatePage() {
     const [token,] = useContext(UserContext);
@@ -26,7 +26,7 @@ export default function RequestCreatePage() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const payload = {
-            user_id: user.id,
+            manager_id: user.id,
             description,
             address,
             services_ids: selectedServices,
