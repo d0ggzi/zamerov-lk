@@ -8,12 +8,13 @@ from sqlalchemy.orm import relationship, mapped_column, Mapped
 
 from src.domain.base import BaseModel
 from src.domain.choices.status import RequestStatus
+from src.domain.models.mixins import TimestampMixin
 
 if TYPE_CHECKING:
-    from src.domain.models import Service, User
+    from src.domain.models import Service, User, Order
 
 
-class Request(BaseModel):
+class Request(TimestampMixin, BaseModel):
     __tablename__ = "request"
 
     uuid: Mapped[UUID] = mapped_column(Uuid(as_uuid=True), primary_key=True, default=uuid.uuid4, unique=True)
@@ -25,6 +26,7 @@ class Request(BaseModel):
 
     manager: Mapped["User"] = relationship("User", back_populates="requests", foreign_keys=[manager_id])
 
+    order: Mapped["Order"] = relationship("Order", back_populates="request", uselist=False)
     services: Mapped[list["Service"]] = relationship(
         "Service",
         secondary="request_service_relation",

@@ -6,12 +6,13 @@ from sqlalchemy import Uuid, String, ForeignKey
 from sqlalchemy.orm import relationship, Mapped, mapped_column
 
 from src.domain.base import BaseModel
+from src.domain.models.mixins import TimestampMixin
 
 if TYPE_CHECKING:
-    from src.domain.models.request import Request
+    from src.domain.models import Request, Order
 
 
-class Role(BaseModel):
+class Role(TimestampMixin, BaseModel):
     __tablename__ = "role"
 
     uuid: Mapped[UUID] = mapped_column(Uuid(as_uuid=True), primary_key=True, default=uuid.uuid4, unique=True)
@@ -20,7 +21,7 @@ class Role(BaseModel):
     users: Mapped[list["User"]] = relationship("User", back_populates="role")
 
 
-class User(BaseModel):
+class User(TimestampMixin, BaseModel):
     __tablename__ = "users"
 
     uuid: Mapped[UUID] = mapped_column(Uuid(as_uuid=True), primary_key=True, default=uuid.uuid4, unique=True)
@@ -31,5 +32,7 @@ class User(BaseModel):
 
     role: Mapped["Role"] = relationship("Role", back_populates="users")
 
-    requests: Mapped[list["Request"]] = relationship("Request", back_populates="user", foreign_keys="Request.user_id")
-    employed_requests: Mapped[list["Request"]] = relationship("Request", foreign_keys="Request.employer_id")
+    requests: Mapped[list["Request"]] = relationship(
+        "Request", back_populates="manager", foreign_keys="Request.manager_id"
+    )
+    employed_requests: Mapped[list["Order"]] = relationship("Order", foreign_keys="Order.employee_id")

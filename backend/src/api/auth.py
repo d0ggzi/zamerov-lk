@@ -31,8 +31,8 @@ async def create_user(user_create: UserCreate, session: Session = Depends(get_se
 
 
 @user_router.get("", response_model=list[User])
-async def list_users(session: Session = Depends(get_session), user=fastapi.Depends(get_current_user)):
-    return await user_service.list_users(session)
+async def list_users(role: str | None = None, session: Session = Depends(get_session), user=fastapi.Depends(get_current_user)):
+    return await user_service.list_users(session, role=role)
 
 
 @user_router.get("/me", response_model=User)

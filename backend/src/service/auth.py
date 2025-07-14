@@ -46,8 +46,11 @@ async def get_user_by_id(session: Session, user_id: str) -> schemas.User:
     return user
 
 
-async def list_users(session: Session) -> list[User]:
-    orm_users = session.execute(select(models.User)).scalars().all()
+async def list_users(session: Session, role: str | None) -> list[User]:
+    query = select(models.User)
+    if role is not None:
+        query = query.join(models.Role).where(models.Role.name == role)
+    orm_users = session.execute(query).scalars().all()
     users = [
         schemas.User(
             id=str(orm_user.uuid),

@@ -15,9 +15,9 @@ async def list_requests(request_service: RequestService = Depends(get_request_se
     return await request_service.list()
 
 
-@user_router.get("/{user_id}/requests")
-async def list_user_requests(user_id: str, request_service: RequestService = Depends(get_request_service)):
-    return await request_service.list(user_id=user_id)
+@user_router.get("/{manager_id}/requests")
+async def list_user_requests(manager_id: str, request_service: RequestService = Depends(get_request_service)):
+    return await request_service.list(manager_id=manager_id)
 
 
 @request_router.post("/")

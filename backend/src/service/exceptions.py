@@ -18,5 +18,9 @@ class RequestNotFoundError(Exception):
     """Заявка не найдена"""
 
 
+class OrderNotFoundError(Exception):
+    """Заказ не найден"""
+
+
 class ServiceNotFoundError(Exception):
     """Услуга не найдена"""

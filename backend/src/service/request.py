@@ -17,29 +17,30 @@ class RequestService:
     def __init__(self, session: Session):
         self.session = session
 
-    async def list(self, user_id: str | None = None):
-        query = select(models.Request)
-        if user_id is not None:
-            query = query.where(models.Request.user_id == user_id)
+    async def list(self, manager_id: str | None = None):
+        query = select(models.Request).where(models.Request.deleted_at.is_(None))
+        if manager_id is not None:
+            query = query.where(models.Request.manager_id == manager_id)
         requests = self.session.execute(query).scalars().all()
         schema_requests = [Request.from_orm_model(request) for request in requests]
         return schema_requests
 
     async def get(self, request_id: str):
         try:
-            request = self.session.execute(select(models.Request).where(models.Request.uuid == request_id)).scalar_one()
+            request = self.session.execute(
+                select(models.Request).where(models.Request.uuid == request_id, models.Request.deleted_at.is_(None))
+            ).scalar_one()
         except NoResultFound:
             raise RequestNotFoundError
         return Request.from_orm_model(request)
 
     async def create(self, request_create: RequestCreate):
         request = models.Request(
-            user_id=request_create.user_id,
+            manager_id=request_create.manager_id,
             description=request_create.description,
             address=request_create.address,
             data=request_create.data,
-            status=RequestStatus("draft"),
-            employer_id=request_create.employer_id,
+            status=RequestStatus.NEW.value,
         )
         self.session.add(request)
         self.session.flush()
@@ -55,7 +56,7 @@ class RequestService:
     async def edit(self, request_id: str, request_edit: RequestEdit):
         try:
             orm_request = self.session.execute(
-                select(models.Request).where(models.Request.uuid == request_id)
+                select(models.Request).where(models.Request.uuid == request_id, models.Request.deleted_at.is_(None))
             ).scalar_one()
         except NoResultFound:
             raise RequestNotFoundError
@@ -66,19 +67,7 @@ class RequestService:
         if request_edit.data is not None:
             orm_request.data = request_edit.data
         if request_edit.status is not None:
-            orm_request.status = request_edit.status
-        if request_edit.employer_id is not None:
-            try:
-                self.session.execute(
-                    select(models.User)
-                    .join(models.Role)
-                    .where(
-                        models.User.uuid == request_edit.employer_id, models.Role.name == choices.Role.EMPLOYER.value
-                    )
-                ).scalar_one()
-            except NoResultFound:
-                raise UserNotFoundError
-            orm_request.employer_id = uuid.UUID(request_edit.employer_id)
+            orm_request.status = request_edit.status.value
         if request_edit.services_ids is not None:
             self.session.execute(
                 delete(models.RequestServiceRelation).where(
@@ -97,9 +86,11 @@ class RequestService:
 
     async def delete(self, request_id: str):
         try:
-            request = self.session.execute(select(models.Request).where(models.Request.uuid == request_id)).scalar_one()
+            request = self.session.execute(
+                select(models.Request).where(models.Request.uuid == request_id, models.Request.deleted_at.is_(None))
+            ).scalar_one()
         except NoResultFound:
             raise RequestNotFoundError
-        self.session.delete(request)
+        request.set_deleted()
         self.session.commit()
         return Request.from_orm_model(request)

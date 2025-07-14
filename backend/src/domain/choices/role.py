@@ -3,6 +3,6 @@ import enum
 
 class Role(enum.Enum):
     USER = "user"
-    EMPLOYER = "employer"
+    EMPLOYEE = "employee"
     MANAGER = "manager"
     ADMIN = "admin"

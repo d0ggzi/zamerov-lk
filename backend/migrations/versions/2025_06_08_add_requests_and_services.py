@@ -31,18 +31,18 @@ def upgrade() -> None:
     op.create_table(
         "request",
         sa.Column("uuid", sa.Uuid(), nullable=False),
-        sa.Column("user_id", sa.Uuid(), nullable=False),
+        sa.Column("manager_id", sa.Uuid(), nullable=False),
         sa.Column("description", sa.Text(), nullable=True),
         sa.Column("address", sa.String(length=255), nullable=True),
         sa.Column("data", sa.DateTime(timezone=True), nullable=True),
         sa.Column("status", sa.String(length=50), nullable=False),
-        sa.Column("employer_id", sa.Uuid(), nullable=True),
+        sa.Column("employee_id", sa.Uuid(), nullable=True),
         sa.ForeignKeyConstraint(
-            ["employer_id"],
+            ["employee_id"],
             ["users.uuid"],
         ),
         sa.ForeignKeyConstraint(
-            ["user_id"],
+            ["manager_id"],
             ["users.uuid"],
         ),
         sa.PrimaryKeyConstraint("uuid"),
