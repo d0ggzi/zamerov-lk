@@ -33,3 +33,13 @@ async def edit_order(order_id: str, order_edit: OrderEdit, order_service: OrderS
     except UserNotFoundError as exc:
         raise fastapi.HTTPException(status_code=404, detail="User not found") from exc
     return order
+
+
+@order_router.delete("/{order_id}")
+async def delete_order(order_id: str, order_service: OrderService = Depends(get_order_service)):
+    try:
+        order = await order_service.delete(order_id=order_id)
+    except OrderNotFoundError as exc:
+        raise fastapi.HTTPException(status_code=404, detail="Order not found") from exc
+
+    return order

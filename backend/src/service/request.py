@@ -96,6 +96,7 @@ class RequestService:
             request_id=request.uuid,
         )
         self.session.add(order)
+        self.session.flush()
         order_services = []
         for service in request.services:
             order_services.append(models.OrderServiceRelation(

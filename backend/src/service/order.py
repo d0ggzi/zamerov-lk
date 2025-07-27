@@ -13,7 +13,7 @@ class OrderService:
         self.session = session
 
     async def list(self, user_id: str | None = None):
-        query = select(models.Order)
+        query = select(models.Order).where(models.Order.deleted_at.is_(None))
         if user_id is not None:
             query = query.where(models.Order.user_id == user_id)
         orders = self.session.execute(query).scalars().all()
@@ -22,14 +22,14 @@ class OrderService:
 
     async def get(self, order_id: str):
         try:
-            order = self.session.execute(select(models.Order).where(models.Order.uuid == order_id)).scalar_one()
+            order = self.session.execute(select(models.Order).where(models.Order.uuid == order_id, models.Order.deleted_at.is_(None))).scalar_one()
         except NoResultFound:
             raise OrderNotFoundError
         return Order.from_orm_model(order)
 
     async def edit(self, order_id: str, order_edit: OrderEdit):
         try:
-            orm_order = self.session.execute(select(models.Order).where(models.Order.uuid == order_id)).scalar_one()
+            orm_order = self.session.execute(select(models.Order).where(models.Order.uuid == order_id, models.Order.deleted_at.is_(None))).scalar_one()
         except NoResultFound:
             raise OrderNotFoundError
         set_fields = order_edit.model_dump(exclude_unset=True)
@@ -67,5 +67,14 @@ class OrderService:
                 )
             self.session.add_all(order_service_relations)
         self.session.add(orm_order)
+        self.session.commit()
+        return Order.from_orm_model(orm_order)
+
+    async def delete(self, order_id: str):
+        try:
+            orm_order = self.session.execute(select(models.Order).where(models.Order.uuid == order_id, models.Order.deleted_at.is_(None))).scalar_one()
+        except NoResultFound:
+            raise OrderNotFoundError
+        orm_order.set_deleted()
         self.session.commit()
         return Order.from_orm_model(orm_order)
