@@ -9,7 +9,7 @@ from src.api.schemas import User, Service
 from src.api.schemas.auth import Role
 from src.api.schemas.request import RequestCreate, Request, RequestEdit
 from src.domain import models, choices
-from src.domain.choices.status import RequestStatus
+from src.domain.choices.status import RequestStatus, OrderStatus
 from src.service.exceptions import UserNotFoundError, RequestNotFoundError
 
 
@@ -60,15 +60,18 @@ class RequestService:
             ).scalar_one()
         except NoResultFound:
             raise RequestNotFoundError
-        if request_edit.description is not None:
+        set_fields = request_edit.model_dump(exclude_unset=True)
+        if "description" in set_fields:
             orm_request.description = request_edit.description
-        if request_edit.address is not None:
+        if "address" in set_fields:
             orm_request.address = request_edit.address
-        if request_edit.data is not None:
+        if "data" in set_fields:
             orm_request.data = request_edit.data
-        if request_edit.status is not None:
+        if "status" in set_fields:
             orm_request.status = request_edit.status.value
-        if request_edit.services_ids is not None:
+            if request_edit.status == RequestStatus.ORDER:
+                self._create_order(orm_request)
+        if "services_ids" in set_fields:
             self.session.execute(
                 delete(models.RequestServiceRelation).where(
                     models.RequestServiceRelation.request_id == orm_request.uuid
@@ -83,6 +86,24 @@ class RequestService:
         self.session.add(orm_request)
         self.session.commit()
         return Request.from_orm_model(orm_request)
+
+    def _create_order(self, request: models.Request):
+        order = models.Order(
+            description=request.description,
+            status=OrderStatus.READY,
+            address=request.address,
+            data=request.data,
+            request_id=request.uuid,
+        )
+        self.session.add(order)
+        order_services = []
+        for service in request.services:
+            order_services.append(models.OrderServiceRelation(
+                order_id=order.uuid,
+                service_id=service.uuid
+            ))
+        self.session.add_all(order_services)
+        self.session.commit()
 
     async def delete(self, request_id: str):
         try:

@@ -32,25 +32,29 @@ class OrderService:
             orm_order = self.session.execute(select(models.Order).where(models.Order.uuid == order_id)).scalar_one()
         except NoResultFound:
             raise OrderNotFoundError
-        if order_edit.description is not None:
+        set_fields = order_edit.model_dump(exclude_unset=True)
+        if "description" in set_fields:
             orm_order.description = order_edit.description
-        if order_edit.address is not None:
+        if "address" in set_fields:
             orm_order.address = order_edit.address
-        if order_edit.data is not None:
+        if "data" in set_fields:
             orm_order.data = order_edit.data
-        if order_edit.status is not None:
+        if "status" in set_fields:
             orm_order.status = order_edit.status.value
-        if order_edit.employee_id is not None:
-            try:
-                self.session.execute(
-                    select(models.User)
-                    .join(models.Role)
-                    .where(models.User.uuid == order_edit.employee_id, models.Role.name == choices.Role.EMPLOYEE.value)
-                ).scalar_one()
-            except NoResultFound:
-                raise UserNotFoundError
-            orm_order.employee_id = uuid.UUID(order_edit.employee_id)
-        if order_edit.services_ids is not None:
+        if "employee_id" in set_fields:
+            if order_edit.employee_id is not None:
+                try:
+                    self.session.execute(
+                        select(models.User)
+                        .join(models.Role)
+                        .where(models.User.uuid == order_edit.employee_id, models.Role.name == choices.Role.EMPLOYEE.value)
+                    ).scalar_one()
+                except NoResultFound:
+                    raise UserNotFoundError
+                orm_order.employee_id = uuid.UUID(order_edit.employee_id)
+            else:
+                orm_order.employee_id = None
+        if "services_ids" in set_fields:
             self.session.execute(
                 delete(models.OrderServiceRelation).where(
                     models.OrderServiceRelation.order_id == orm_order.uuid
