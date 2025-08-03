@@ -19,7 +19,7 @@ async def create_service(service_create: ServiceCreate, service_service: Service
     return await service_service.create(service_create=service_create)
 
 
-@service_router.delete("/{service_name}")
+@service_router.delete("/{service_id}")
 async def delete_service(service_id: str, service_service: ServiceService = Depends(get_service_service)):
     try:
         service = await service_service.delete(service_id=service_id)

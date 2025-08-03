@@ -55,6 +55,9 @@ export default function RequestEditPage() {
         if (status !== (request.status || "")) {
             updatedFields.status = status;
         }
+        if (selectedServices.length !== request.services.length) {
+            updatedFields.services_ids = selectedServices;
+        }
 
         if (Object.keys(updatedFields).length === 0) {
             alert("Нет изменений для сохранения");

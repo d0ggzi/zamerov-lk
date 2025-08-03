@@ -23,7 +23,7 @@ export default function OrderEditPage() {
     const [employees, setEmployees] = useState([]);
     const [selectedEmployee, setSelectedEmployee] = useState("");
 
-    const [time, setTime] = useState({ hours: '00', minutes: '00' });
+    const [date, setDate] = useState(new Date());
 
     useEffect(() => {
         fetch(`/api/orders/${id}`, {
@@ -37,6 +37,7 @@ export default function OrderEditPage() {
                 setStatus(data.status || "");
                 setSelectedEmployee(data.employee?.id || null);
                 setSelectedServices(data.services ? data.services.map(service => service.id) : []);
+                setDate(new Date(data.data));
             })
             .catch(console.error);
     }, [id, token]);
@@ -74,6 +75,12 @@ export default function OrderEditPage() {
         }
         if (selectedEmployee !== order.employee?.id) {
             updatedFields.employee_id = selectedEmployee;
+        }
+        if (selectedServices.length !== order.services.length) {
+            updatedFields.services_ids = selectedServices;
+        }
+        if (date.toISOString() !== new Date(order.data).toISOString()) {
+            updatedFields.data = date.toISOString();
         }
 
         if (Object.keys(updatedFields).length === 0) {
@@ -137,11 +144,9 @@ export default function OrderEditPage() {
                 </option>))}
             </select>
 
-
-
             <div className="flex justify-between">
-                <DatePicker/>
-                <TimePicker24 value={time} onChange={setTime} />
+                <DatePicker date={date} setDate={setDate}/>
+                <TimePicker24 date={date} setDate={setDate}/>
             </div>
 
             <button type="submit" className={buttonPrimary}>Сохранить</button>

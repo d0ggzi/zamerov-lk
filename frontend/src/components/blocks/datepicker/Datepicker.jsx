@@ -1,7 +1,6 @@
 import {createTheme, Datepicker} from "flowbite-react";
 
-export function DatePicker() {
-
+export function DatePicker({ date, setDate }) {
     const customTheme = createTheme({
         "root": {
             "base": "relative"
@@ -86,6 +85,6 @@ export function DatePicker() {
     })
 
     return (
-        <Datepicker theme={customTheme} className="mb-5" weekStart={1} language="ru-RU" labelTodayButton="Сегодня" labelClearButton="Очистить"/>
+        <Datepicker value={date} onChange={setDate} theme={customTheme} className="mb-5" weekStart={1} language="ru-RU" labelTodayButton="Сегодня" labelClearButton="Очистить"/>
     )
 }

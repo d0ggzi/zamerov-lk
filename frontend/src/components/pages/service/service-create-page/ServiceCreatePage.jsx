@@ -6,6 +6,7 @@ import {buttonPrimary, inputStyle} from "../../../themes/default.js";
 export default function ServiceCreatePage() {
   const [token,] = useContext(UserContext);
   const [name, setName] = useState("");
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -15,6 +16,11 @@ export default function ServiceCreatePage() {
     };
 
     try {
+      if (name.length === 0){
+        setError("Имя не может быть пустым");
+        return;
+      }
+
       const res = await fetch("/api/services/", {
         method: "POST",
         headers: {
@@ -35,7 +41,7 @@ export default function ServiceCreatePage() {
       <h2 className="text-2xl font-bold mb-4">Создание услуги</h2>
       <form onSubmit={handleSubmit}>
         <input type="text" placeholder="Название" value={name} onChange={(e) => setName(e.target.value)} className={inputStyle} />
-
+        {error && <p className="text-red-500 text-sm mb-3">{error}</p>}
         <button type="submit" className={buttonPrimary}>Создать</button>
       </form>
     </div>

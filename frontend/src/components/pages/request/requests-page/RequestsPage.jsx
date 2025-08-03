@@ -19,6 +19,24 @@ export default function RequestsPage() {
     }, [token]);
 
 
+    const handleDelete = (id) => {
+        if (!window.confirm("Удалить заявку?")) return;
+
+        fetch(`/api/requests/${id}`, {
+            method: "DELETE",
+            headers: {Authorization: `Bearer ${token}`},
+        })
+            .then((res) => {
+                if (res.ok) {
+                    setRequests((prev) => prev.filter((s) => s.id !== id));
+                } else {
+                    throw new Error("Ошибка при удалении");
+                }
+            })
+            .catch((err) => alert(err.message));
+    };
+
+
     return (
         <>
             <div className="grid md:grid-cols-4 gap-7 mb-4 md:pl-10 md:pr-10 md:pt-10">
@@ -26,7 +44,7 @@ export default function RequestsPage() {
                     <p className="text-gray-500">Нет заявок</p>
                 ) : (
                     requests.map((req) => (
-                        <Request key={req.id} request={req}/>
+                        <Request key={req.id} request={req} onDelete={handleDelete} canDelete={["manager", "admin"].includes(user?.role?.name)}/>
                     ))
                 )}
             </div>

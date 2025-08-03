@@ -18,6 +18,23 @@ export default function OrderPage() {
             .catch(console.error);
     }, [token]);
 
+    const handleDelete = (id) => {
+        if (!window.confirm("Удалить заказ?")) return;
+
+        fetch(`/api/orders/${id}`, {
+            method: "DELETE",
+            headers: {Authorization: `Bearer ${token}`},
+        })
+            .then((res) => {
+                if (res.ok) {
+                    setOrders((prev) => prev.filter((s) => s.id !== id));
+                } else {
+                    throw new Error("Ошибка при удалении");
+                }
+            })
+            .catch((err) => alert(err.message));
+    };
+
 
     return (
         <>
@@ -26,7 +43,7 @@ export default function OrderPage() {
                     <p className="text-gray-500">Нет заявок</p>
                 ) : (
                     orders.map((order) => (
-                        <Order key={order.id} order={order}/>
+                        <Order key={order.id} order={order} onDelete={handleDelete} canDelete={["manager", "admin"].includes(user?.role?.name)}/>
                     ))
                 )}
             </div>
