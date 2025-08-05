@@ -1,12 +1,13 @@
 import fastapi
 from fastapi import APIRouter, Depends
 
+from src.api.dependencies.auth import get_current_user
 from src.api.dependencies.order import get_order_service
 from src.api.schemas.order import OrderEdit
 from src.service.exceptions import OrderNotFoundError, UserNotFoundError
 from src.service.order import OrderService
 
-order_router = APIRouter(prefix="/api/orders", tags=["orders"])
+order_router = APIRouter(prefix="/api/orders", tags=["orders"], dependencies=[Depends(get_current_user)])
 
 
 @order_router.get("/")

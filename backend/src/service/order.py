@@ -22,14 +22,18 @@ class OrderService:
 
     async def get(self, order_id: str):
         try:
-            order = self.session.execute(select(models.Order).where(models.Order.uuid == order_id, models.Order.deleted_at.is_(None))).scalar_one()
+            order = self.session.execute(
+                select(models.Order).where(models.Order.uuid == order_id, models.Order.deleted_at.is_(None))
+            ).scalar_one()
         except NoResultFound:
             raise OrderNotFoundError
         return Order.from_orm_model(order)
 
     async def edit(self, order_id: str, order_edit: OrderEdit):
         try:
-            orm_order = self.session.execute(select(models.Order).where(models.Order.uuid == order_id, models.Order.deleted_at.is_(None))).scalar_one()
+            orm_order = self.session.execute(
+                select(models.Order).where(models.Order.uuid == order_id, models.Order.deleted_at.is_(None))
+            ).scalar_one()
         except NoResultFound:
             raise OrderNotFoundError
         set_fields = order_edit.model_dump(exclude_unset=True)
@@ -47,7 +51,9 @@ class OrderService:
                     self.session.execute(
                         select(models.User)
                         .join(models.Role)
-                        .where(models.User.uuid == order_edit.employee_id, models.Role.name == choices.Role.EMPLOYEE.value)
+                        .where(
+                            models.User.uuid == order_edit.employee_id, models.Role.name == choices.Role.EMPLOYEE.value
+                        )
                     ).scalar_one()
                 except NoResultFound:
                     raise UserNotFoundError
@@ -56,9 +62,7 @@ class OrderService:
                 orm_order.employee_id = None
         if "services_ids" in set_fields:
             self.session.execute(
-                delete(models.OrderServiceRelation).where(
-                    models.OrderServiceRelation.order_id == orm_order.uuid
-                )
+                delete(models.OrderServiceRelation).where(models.OrderServiceRelation.order_id == orm_order.uuid)
             )
             order_service_relations = []
             for service_id in order_edit.services_ids:
@@ -72,7 +76,9 @@ class OrderService:
 
     async def delete(self, order_id: str):
         try:
-            orm_order = self.session.execute(select(models.Order).where(models.Order.uuid == order_id, models.Order.deleted_at.is_(None))).scalar_one()
+            orm_order = self.session.execute(
+                select(models.Order).where(models.Order.uuid == order_id, models.Order.deleted_at.is_(None))
+            ).scalar_one()
         except NoResultFound:
             raise OrderNotFoundError
         orm_order.set_deleted()

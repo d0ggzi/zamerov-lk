@@ -1,12 +1,13 @@
 import fastapi
 from fastapi import APIRouter, Depends
 
+from src.api.dependencies.auth import get_current_user
 from src.api.dependencies.service import get_service_service
 from src.api.schemas.service import ServiceCreate
 from src.service.exceptions import ServiceNotFoundError
 from src.service.service import ServiceService
 
-service_router = APIRouter(prefix="/api/services", tags=["services"])
+service_router = APIRouter(prefix="/api/services", tags=["services"], dependencies=[Depends(get_current_user)])
 
 
 @service_router.get("/")
