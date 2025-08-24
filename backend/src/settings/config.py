@@ -9,7 +9,13 @@ class Settings(BaseSettings):
     POSTGRES_USER: str
     POSTGRES_PASSWORD: str
     POSTGRES_DB: str
+
     JWT_SECRET: str
+
+    YANDEX_S3_ENDPOINT: str
+    YANDEX_S3_ACCESS_KEY: str
+    YANDEX_S3_SECRET_KEY: str
+    YANDEX_S3_BUCKET_NAME: str
 
     @property
     def DATABASE_URL_psycopg(self):

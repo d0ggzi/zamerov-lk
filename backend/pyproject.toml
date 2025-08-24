@@ -21,6 +21,7 @@ psycopg = "^3.2.4"
 uuid = "^1.30"
 ruff = "^0.11.4"
 mypy = "^1.16.0"
+boto3 = "^1.40.16"
 
 [build-system]
 requires = ["poetry-core"]
