@@ -6,6 +6,7 @@ import MultiSelectDropdown from "../../../blocks/multi-select-dropdown/MultiSele
 import {UserContext} from "../../../../context/user-context.jsx";
 import {DatePicker} from "../../../blocks/datepicker/Datepicker.jsx";
 import TimePicker24 from "../../../blocks/timepicker/TimePicker.jsx";
+import UploadPhoto from "../../../blocks/upload-photo/UploadPhoto.jsx";
 
 export default function OrderEditPage() {
     const {id} = useParams();
@@ -148,6 +149,8 @@ export default function OrderEditPage() {
                 <DatePicker date={date} setDate={setDate}/>
                 <TimePicker24 date={date} setDate={setDate}/>
             </div>
+
+            <UploadPhoto orderId={order.id}/>
 
             <button type="submit" className={buttonPrimary}>Сохранить</button>
         </form>

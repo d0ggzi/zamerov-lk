@@ -10,7 +10,7 @@ export default function OrderPage() {
     const [orders, setOrders] = useState([]);
 
     useEffect(() => {
-        fetch(`/api/orders`, {
+        fetch(`/api/orders/`, {
             headers: {Authorization: `Bearer ${token}`},
         })
             .then((res) => res.json())
