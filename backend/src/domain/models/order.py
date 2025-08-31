@@ -1,3 +1,4 @@
+import typing
 from datetime import datetime
 from uuid import UUID
 import uuid
@@ -9,6 +10,9 @@ from src.domain.base import BaseModel
 from src.domain.choices import OrderStatus
 from src.domain.models import Request, User, Service
 from src.domain.models.mixins import TimestampMixin
+
+if typing.TYPE_CHECKING:
+    from src.domain.models import OrderPhoto
 
 
 class Order(TimestampMixin, BaseModel):
@@ -29,6 +33,10 @@ class Order(TimestampMixin, BaseModel):
         "Service",
         secondary="order_service_relation",
         back_populates="orders",
+    )
+    photos: Mapped[list["OrderPhoto"]] = relationship(
+        "OrderPhoto",
+        back_populates="order",
     )
 
 

@@ -70,6 +70,16 @@ class OrderService:
                     models.OrderServiceRelation(order_id=orm_order.uuid, service_id=service_id)
                 )
             self.session.add_all(order_service_relations)
+        if "photos_urls" in set_fields:
+            self.session.execute(
+                delete(models.OrderPhoto).where(models.OrderPhoto.order_id == orm_order.uuid)
+            )
+            order_photos = []
+            for photo_url in order_edit.photos_urls:
+                order_photos.append(
+                    models.OrderPhoto(order_id=orm_order.uuid, url=photo_url)
+                )
+            self.session.add_all(order_photos)
         self.session.add(orm_order)
         self.session.commit()
         return Order.from_orm_model(orm_order)
