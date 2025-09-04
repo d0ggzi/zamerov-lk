@@ -46,6 +46,21 @@ export default function Order({order, onDelete, canDelete}) {
         }
     }
 
+    async function handleAddPhotos(newPhotos) {
+        const prev = photos;
+        const next = [...prev, ...newPhotos];
+
+        setPhotos(next);
+
+        try {
+            await patchPhotos(next.map(toUrl));
+        } catch (e) {
+            console.error(e);
+            setPhotos(prev);
+            alert("Не удалось добавить фото. Попробуйте ещё раз.");
+        }
+    }
+
     return (
         <div className={`${cardStyle} relative group pb-8`}>
             <p className="font-medium">Описание: {order.description || "-"}</p>
@@ -102,6 +117,7 @@ export default function Order({order, onDelete, canDelete}) {
                 isOpen={showGallery}
                 onClose={() => setShowGallery(false)}
                 onRemove={handleRemove}
+                onAddPhotos={handleAddPhotos}
             />
         </div>
     );

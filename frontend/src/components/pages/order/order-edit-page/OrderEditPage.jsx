@@ -150,8 +150,6 @@ export default function OrderEditPage() {
                 <TimePicker24 date={date} setDate={setDate}/>
             </div>
 
-            <UploadPhoto orderId={order.id}/>
-
             <button type="submit" className={buttonPrimary}>Сохранить</button>
         </form>
     </div>);
