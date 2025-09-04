@@ -12,7 +12,7 @@ function ProtectedRoute({children, requiredRoles = []}) {
         if (!token) {
             navigate('/login', { replace: true });
         } else if (requiredRoles.length > 0 && !hasRole(requiredRoles)) {
-            navigate('/unauthorized', { replace: true }); // или другая страница с отказом в доступе
+            navigate('/unauthorized', { replace: true });
         }
     }, [navigate, token, hasRole, requiredRoles]);
 

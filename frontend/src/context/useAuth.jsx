@@ -1,5 +1,5 @@
-import { useContext, useMemo } from "react";
-import { jwtDecode } from "jwt-decode";
+import {useContext, useMemo} from "react";
+import {jwtDecode} from "jwt-decode";
 import {UserContext} from "./user-context.jsx";
 
 export function useAuth() {
@@ -20,5 +20,5 @@ export function useAuth() {
         return requiredRoles.includes(user.role.name);
     };
 
-    return { user, hasRole, isAuthenticated: !!user };
+    return {user, hasRole, isAuthenticated: !!user};
 }

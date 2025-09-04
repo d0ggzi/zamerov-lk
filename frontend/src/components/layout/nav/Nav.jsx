@@ -2,9 +2,9 @@ import {useContext} from "react";
 import {UserContext} from "../../../context/user-context.jsx";
 import {useAuth} from "../../../context/useAuth.jsx";
 
-function Nav () {
-    const [token, setToken] = useContext(UserContext);
-    const { user } = useAuth();
+function Nav() {
+    const [setToken] = useContext(UserContext);
+    const {user} = useAuth();
     const logout = () => setToken(null);
 
     return (
