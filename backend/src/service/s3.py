@@ -1,6 +1,7 @@
 from datetime import datetime
 
 import boto3
+from botocore.exceptions import ClientError
 
 from src.settings.config import settings
 
@@ -27,5 +28,12 @@ class S3Service:
         )
         public_url = f"{settings.YANDEX_S3_ENDPOINT}/{settings.YANDEX_S3_BUCKET_NAME}/{object_name}"
         return presigned_url, public_url
+
+    def delete_file(self, file: str) -> None:
+        key = file.split(settings.YANDEX_S3_BUCKET_NAME)[1][1:]
+        try:
+            self.s3.delete_object(Bucket=settings.YANDEX_S3_BUCKET_NAME, Key=key)
+        except ClientError:
+            raise
 
 s3_service = S3Service()

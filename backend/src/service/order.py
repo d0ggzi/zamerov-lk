@@ -6,11 +6,13 @@ from sqlalchemy.orm import Session
 from src.api.schemas.order import OrderEdit, Order
 from src.domain import models, choices
 from src.service.exceptions import OrderNotFoundError, UserNotFoundError
+from src.service.s3 import S3Service
 
 
 class OrderService:
-    def __init__(self, session: Session):
+    def __init__(self, session: Session, s3_service: S3Service):
         self.session = session
+        self.s3_service = s3_service
 
     async def list(self, user_id: str | None = None):
         query = select(models.Order).where(models.Order.deleted_at.is_(None))
@@ -71,14 +73,21 @@ class OrderService:
                 )
             self.session.add_all(order_service_relations)
         if "photos_urls" in set_fields:
-            self.session.execute(
-                delete(models.OrderPhoto).where(models.OrderPhoto.order_id == orm_order.uuid)
-            )
+            photos_to_delete = self.session.execute(
+                select(models.OrderPhoto).where(
+                    models.OrderPhoto.order_id == orm_order.uuid,
+                    models.OrderPhoto.url.not_in(order_edit.photos_urls))
+            ).scalars().all()
+            for photo in photos_to_delete:
+                self.s3_service.delete_file(photo.url)
+                self.session.delete(photo)
+            existing_order_photos = self.session.execute(select(models.OrderPhoto.url).where(models.OrderPhoto.order_id == orm_order.uuid)).scalars().all()
             order_photos = []
             for photo_url in order_edit.photos_urls:
-                order_photos.append(
-                    models.OrderPhoto(order_id=orm_order.uuid, url=photo_url)
-                )
+                if photo_url not in existing_order_photos:
+                    order_photos.append(
+                        models.OrderPhoto(order_id=orm_order.uuid, url=photo_url)
+                    )
             self.session.add_all(order_photos)
         self.session.add(orm_order)
         self.session.commit()
