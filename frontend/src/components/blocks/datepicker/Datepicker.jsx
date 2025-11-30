@@ -9,15 +9,15 @@ export function DatePicker({ date, setDate }) {
             "root": {
                 "base": "absolute top-10 z-50 block pt-2",
                 "inline": "relative top-0 z-auto",
-                "inner": "inline-block rounded-lg bg-white p-4 shadow-lg dark:bg-gray-800"
+                "inner": "inline-block rounded-lg bg-gray-800 p-4 shadow-lg"
             },
             "header": {
                 "base": "",
-                "title": "px-2 py-3 text-center font-semibold text-gray-900 dark:text-white",
+                "title": "px-2 py-3 text-center font-semibold text-white",
                 "selectors": {
                     "base": "mb-2 flex justify-between",
                     "button": {
-                        "base": "rounded-lg bg-white px-5 py-2.5 text-sm font-semibold text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600",
+                        "base": "rounded-lg px-5 py-2.5 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-gray-200 bg-gray-700 text-white hover:bg-gray-600",
                         "prev": "",
                         "next": "",
                         "view": ""
@@ -31,8 +31,8 @@ export function DatePicker({ date, setDate }) {
                 "base": "mt-2 flex space-x-2",
                 "button": {
                     "base": "w-full rounded-lg px-5 py-2 text-center text-sm font-medium focus:ring-4 focus:ring-primary-300",
-                    "today": "bg-primary-700 text-white hover:bg-primary-800 dark:bg-primary-600 dark:hover:bg-primary-700",
-                    "clear": "border border-gray-300 bg-white text-gray-900 hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600"
+                    "today": "text-white bg-primary-600 hover:bg-primary-700",
+                    "clear": "border border-gray-600 bg-gray-700 text-white hover:bg-gray-600"
                 }
             }
         },
@@ -40,12 +40,12 @@ export function DatePicker({ date, setDate }) {
             "days": {
                 "header": {
                     "base": "mb-1 grid grid-cols-7",
-                    "title": "h-6 text-center text-sm font-medium leading-6 text-gray-500 dark:text-gray-400"
+                    "title": "h-6 text-center text-sm font-medium leading-6 text-gray-400"
                 },
                 "items": {
                     "base": "grid w-64 grid-cols-7",
                     "item": {
-                        "base": "block flex-1 cursor-pointer rounded-lg border-0 text-center text-sm font-semibold leading-9 text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-600",
+                        "base": "block flex-1 cursor-pointer rounded-lg border-0 text-center text-sm font-semibold leading-9 text-white hover:bg-gray-600",
                         "selected": "bg-primary-700 text-white hover:bg-primary-600",
                         "disabled": "text-gray-500"
                     }
@@ -55,7 +55,7 @@ export function DatePicker({ date, setDate }) {
                 "items": {
                     "base": "grid w-64 grid-cols-4",
                     "item": {
-                        "base": "block flex-1 cursor-pointer rounded-lg border-0 text-center text-sm font-semibold leading-9 text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-600",
+                        "base": "block flex-1 cursor-pointer rounded-lg border-0 text-center text-sm font-semibold leading-9 text-white hover:bg-gray-600",
                         "selected": "bg-primary-700 text-white hover:bg-primary-600",
                         "disabled": "text-gray-500"
                     }
@@ -65,7 +65,7 @@ export function DatePicker({ date, setDate }) {
                 "items": {
                     "base": "grid w-64 grid-cols-4",
                     "item": {
-                        "base": "block flex-1 curso r-pointer rounded-lg border-0 text-center text-sm font-semibold leading-9 text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-600",
+                        "base": "block flex-1 curso r-pointer rounded-lg border-0 text-center text-sm font-semibold leading-9 text-white hover:bg-gray-600",
                         "selected": "bg-primary-700 text-white hover:bg-primary-600",
                         "disabled": "text-gray-500"
                     }
@@ -75,7 +75,7 @@ export function DatePicker({ date, setDate }) {
                 "items": {
                     "base": "grid w-64 grid-cols-4",
                     "item": {
-                        "base": "block flex-1 cursor-pointer rounded-lg border-0 text-center text-sm font-semibold leading-9 text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-600",
+                        "base": "block flex-1 cursor-pointer rounded-lg border-0 text-center text-sm font-semibold leading-9 text-white hover:bg-gray-600",
                         "selected": "bg-primary-700 text-white hover:bg-primary-600",
                         "disabled": "text-gray-500"
                     }

@@ -1,15 +1,17 @@
+import {sidebarElement, sidebarElementSvg, sidebarElementCounter} from "./styles.js";
+
 function Sidebar () {
     return (
         <aside id="logo-sidebar"
-               className="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0 dark:bg-gray-800 dark:border-gray-700"
+               className="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full border-r sm:translate-x-0 bg-gray-800 border-gray-700"
                aria-label="Sidebar">
-            <div className="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-gray-800">
+            <div className="h-full px-3 pb-4 overflow-y-auto bg-gray-800">
                 <ul className="space-y-2 font-medium">
                     <li>
                         <a href="/"
-                           className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                           className={sidebarElement}>
                             <svg
-                                className="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                                className="w-5 h-5 transition duration-75 text-gray-400 group-hover:text-white"
                                 aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                                 viewBox="0 0 22 21">
                                 <path
@@ -22,9 +24,9 @@ function Sidebar () {
                     </li>
                     <li>
                         <a href="/orders"
-                           className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                           className={sidebarElement}>
                             <svg
-                                className="shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                                className={sidebarElementSvg}
                                 aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                                 viewBox="0 0 18 18">
                                 <path
@@ -32,14 +34,14 @@ function Sidebar () {
                             </svg>
                             <span className="flex-1 ms-3 whitespace-nowrap">Заказы</span>
                             <span
-                                className="inline-flex items-center justify-center w-3 h-3 p-3 ms-3 text-sm font-medium text-blue-800 bg-blue-100 rounded-full dark:bg-custom-yellow dark:text-gray-800">2</span>
+                                className={sidebarElementCounter}>2</span>
                         </a>
                     </li>
                     <li>
                         <a href="/requests"
-                           className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                           className={sidebarElement}>
                             <svg
-                                className="shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                                className={sidebarElementSvg}
                                 aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                                 viewBox="0 0 20 20">
                                 <path
@@ -47,14 +49,14 @@ function Sidebar () {
                             </svg>
                             <span className="flex-1 ms-3 whitespace-nowrap">Заявки</span>
                             <span
-                                className="inline-flex items-center justify-center w-3 h-3 p-3 ms-3 text-sm font-medium text-blue-800 bg-blue-100 rounded-full dark:bg-custom-yellow dark:text-gray-800">1</span>
+                                className={sidebarElementCounter}>1</span>
                         </a>
                     </li>
                     <li>
                         <a href="/services"
-                           className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                           className={sidebarElement}>
                             <svg
-                                className="shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                                className={sidebarElementSvg}
                                 aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                                 viewBox="0 0 20 18">
                                 <path
@@ -62,14 +64,14 @@ function Sidebar () {
                             </svg>
                             <span className="flex-1 ms-3 whitespace-nowrap">Услуги</span>
                             <span
-                                className="inline-flex items-center justify-center w-3 h-3 p-3 ms-3 text-sm font-medium text-blue-800 bg-blue-100 rounded-full dark:bg-custom-yellow dark:text-gray-800">8</span>
+                                className={sidebarElementCounter}>8</span>
                         </a>
                     </li>
                     <li>
                         <a href="#"
-                           className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                           className={sidebarElement}>
                             <svg
-                                className="shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                                className={sidebarElementSvg}
                                 aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                                 viewBox="0 0 18 20">
                                 <path
@@ -77,14 +79,14 @@ function Sidebar () {
                             </svg>
                             <span className="flex-1 ms-3 whitespace-nowrap">Споры</span>
                             <span
-                                className="inline-flex items-center justify-center w-3 h-3 p-3 ms-3 text-sm font-medium text-blue-800 bg-blue-100 rounded-full dark:bg-custom-yellow dark:text-gray-800">1</span>
+                                className={sidebarElementCounter}>1</span>
                         </a>
                     </li>
                     <li>
                         <a href="#"
-                           className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                           className={sidebarElement}>
                             <svg
-                                className="shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                                className={sidebarElementSvg}
                                 aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                                 viewBox="0 0 18 16">
                                 <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"
@@ -93,14 +95,14 @@ function Sidebar () {
                             </svg>
                             <span className="flex-1 ms-3 whitespace-nowrap">Документы</span>
                             <span
-                                className="inline-flex items-center justify-center w-3 h-3 p-3 ms-3 text-sm font-medium text-blue-800 bg-blue-100 rounded-full dark:bg-custom-yellow dark:text-gray-800">5</span>
+                                className={sidebarElementCounter}>5</span>
                         </a>
                     </li>
                     <li>
                         <a href="#"
-                           className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                           className={sidebarElement}>
                             <svg
-                                className="shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                                className={sidebarElementSvg}
                                 aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                                 viewBox="0 0 20 20">
                                 <path d="M5 5V.13a2.96 2.96 0 0 0-1.293.749L.879 3.707A2.96 2.96 0 0 0 .13 5H5Z"/>
@@ -114,9 +116,9 @@ function Sidebar () {
                     </li>
                     <li>
                         <a href="#"
-                           className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                           className={sidebarElement}>
                             <svg
-                                className="shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                                className={sidebarElementSvg}
                                 aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                                 viewBox="0 0 20 20">
                                 <path d="M5 5V.13a2.96 2.96 0 0 0-1.293.749L.879 3.707A2.96 2.96 0 0 0 .13 5H5Z"/>
@@ -130,9 +132,9 @@ function Sidebar () {
                     </li>
                     <li>
                         <a href="#"
-                           className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                           className={sidebarElement}>
                             <svg
-                                className="shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                                className={sidebarElementSvg}
                                 aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                                 viewBox="0 0 20 20">
                                 <path d="M5 5V.13a2.96 2.96 0 0 0-1.293.749L.879 3.707A2.96 2.96 0 0 0 .13 5H5Z"/>
@@ -146,9 +148,9 @@ function Sidebar () {
                     </li>
                     <li>
                         <a href="#"
-                           className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                           className={sidebarElement}>
                             <svg
-                                className="shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                                className={sidebarElementSvg}
                                 aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                                 viewBox="0 0 20 20">
                                 <path d="M5 5V.13a2.96 2.96 0 0 0-1.293.749L.879 3.707A2.96 2.96 0 0 0 .13 5H5Z"/>
@@ -162,9 +164,9 @@ function Sidebar () {
                     </li>
                     <li>
                         <a href="#"
-                           className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                           className={sidebarElement}>
                             <svg
-                                className="shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                                className={sidebarElementSvg}
                                 aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                                 viewBox="0 0 20 20">
                                 <path d="M5 5V.13a2.96 2.96 0 0 0-1.293.749L.879 3.707A2.96 2.96 0 0 0 .13 5H5Z"/>
