@@ -23,6 +23,9 @@ class Request(TimestampMixin, BaseModel):
     address: Mapped[str] = mapped_column(String(255), nullable=True)
     data: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=True)
     status: Mapped[RequestStatus] = mapped_column(String(50), nullable=False)
+    client_name: Mapped[str] = mapped_column(String(255), nullable=True, default=None)
+    client_email: Mapped[str] = mapped_column(String(50), nullable=True, default=None)
+    client_phone: Mapped[str] = mapped_column(String(50), nullable=True, default=None)
 
     manager: Mapped["User"] = relationship("User", back_populates="requests", foreign_keys=[manager_id])
 
