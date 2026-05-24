@@ -119,6 +119,6 @@ async def authenticate_user(session: Session, email: str, password: str) -> sche
 
 
 async def create_token(user: schemas.User):
-    token = jwt.encode(user.dict(), settings.JWT_SECRET)
+    token = jwt.encode(user.model_dump(), settings.JWT_SECRET)
 
     return dict(access_token=token, token_type="bearer")
