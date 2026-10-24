@@ -1,0 +1,32 @@
+services:
+  chat:
+    build: .
+    ports:
+      - "${CHAT_PORT}:${CHAT_PORT}"
+    env_file: .env
+    environment:
+      # Inside Docker, PostgreSQL is reachable via the service name, not localhost.
+      # This single override is the only difference between local dev and Docker.
+      CHAT_POSTGRES_HOST: chat-db
+    depends_on:
+      chat-db:
+        condition: service_healthy
+    restart: unless-stopped
+
+  chat-db:
+    image: postgres:16.1
+    environment:
+      POSTGRES_USER: ${CHAT_POSTGRES_USER}
+      POSTGRES_PASSWORD: ${CHAT_POSTGRES_PASSWORD}
+      POSTGRES_DB: ${CHAT_POSTGRES_DB}
+    volumes:
+      - chat-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${CHAT_POSTGRES_USER}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+volumes:
+  chat-db-data:
