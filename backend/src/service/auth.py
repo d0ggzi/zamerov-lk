@@ -13,6 +13,7 @@ from src.service.exceptions import (
     UserNotFoundError,
     RoleNotFoundError,
     BadCredentials,
+    InvalidCurrentPasswordError,
 )
 from src.settings.config import settings
 from src.utils.password import check_password, hash_password
@@ -70,11 +71,17 @@ async def edit_user(session: Session, user_edit: schemas.UserEdit, user: schemas
     if user_edit.email is not None:
         orm_user.email = user_edit.email
     if user_edit.password is not None:
+        if not user_edit.current_password or not check_password(user_edit.current_password, orm_user.password):
+            raise InvalidCurrentPasswordError
         orm_user.password = hash_password(user_edit.password)
     if user_edit.role_name is not None:
         orm_user.role = session.query(models.Role).filter_by(name=user_edit.role_name).one()
     session.add(orm_user)
-    session.commit()
+    try:
+        session.commit()
+    except IntegrityError as exc:
+        session.rollback()
+        raise UserAlreadyExistsError from exc
     user_res = schemas.User(
         id=str(orm_user.uuid),
         email=orm_user.email,

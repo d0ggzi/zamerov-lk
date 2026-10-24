@@ -4,7 +4,6 @@ from pydantic import BaseModel
 
 from src.api.schemas import User, Service
 from src.api.schemas.auth import Role
-from src.api.schemas.photo import Photo
 from src.domain import models
 from src.domain.choices import OrderStatus
 
@@ -14,10 +13,10 @@ class Order(BaseModel):
     description: str | None = None
     address: str | None = None
     data: datetime | None = None
+    end_data: datetime | None = None
     status: OrderStatus | None = None
     employee: User | None = None
     services: list[Service]
-    photos: list[Photo]
 
     @staticmethod
     def from_orm_model(order: models.Order):
@@ -26,6 +25,7 @@ class Order(BaseModel):
             description=order.description,
             address=order.address,
             data=order.data,
+            end_data=order.end_data,
             status=order.status,
             employee=User(
                 id=str(order.employee.uuid),
@@ -36,7 +36,6 @@ class Order(BaseModel):
             if order.employee is not None
             else None,
             services=[Service(id=str(service.uuid), name=service.name) for service in order.services],
-            photos=[Photo(id=str(photo.uuid), url=photo.url) for photo in order.photos]
         )
 
 
@@ -44,7 +43,7 @@ class OrderEdit(BaseModel):
     description: str | None = None
     address: str | None = None
     data: datetime | None = None
+    end_data: datetime | None = None
     status: OrderStatus | None = None
     employee_id: str | None = None
     services_ids: list[str] | None = None
-    photos_urls: list[str] | None = None

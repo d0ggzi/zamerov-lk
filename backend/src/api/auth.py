@@ -12,6 +12,7 @@ from src.service.exceptions import (
     RoleNotFoundError,
     BadCredentials,
     UserNotFoundError,
+    InvalidCurrentPasswordError,
 )
 
 auth_router = APIRouter(prefix="/api/auth", tags=["auth"])
@@ -58,8 +59,16 @@ async def edit_user(
     session: Session = Depends(get_session),
     user=fastapi.Depends(get_current_user),
 ):
-    edited_user: User = await user_service.edit_user(session, user_edit, user)
-    return edited_user
+    try:
+        edited_user: User = await user_service.edit_user(session, user_edit, user)
+    except UserAlreadyExistsError as exc:
+        raise fastapi.HTTPException(status_code=409, detail="Email already in use") from exc
+    except InvalidCurrentPasswordError as exc:
+        raise fastapi.HTTPException(status_code=400, detail="Current password is incorrect") from exc
+
+    # The JWT carries the user's name/email, so return a fresh token for the
+    # client to swap in — otherwise the UI keeps showing the pre-edit values.
+    return await user_service.create_token(edited_user)
 
 
 @auth_router.post("/token")

@@ -17,6 +17,7 @@ class Request(BaseModel):
     data: datetime | None = None
     status: RequestStatus
     services: list[Service]
+    order_id: str | None = None  # связанный заказ (1:1) — нужен для документов/оплаты
 
     @staticmethod
     def from_orm_model(request: models.Request):
@@ -33,6 +34,7 @@ class Request(BaseModel):
             data=request.data,
             status=request.status,
             services=[Service(id=str(service.uuid), name=service.name) for service in request.services],
+            order_id=str(request.order.uuid) if request.order is not None else None,
         )
 
 

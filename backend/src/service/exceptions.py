@@ -14,6 +14,10 @@ class BadCredentials(Exception):
     """Неверные данные для входа"""
 
 
+class InvalidCurrentPasswordError(Exception):
+    """Текущий пароль указан неверно"""
+
+
 class RequestNotFoundError(Exception):
     """Заявка не найдена"""
 
@@ -24,3 +28,11 @@ class OrderNotFoundError(Exception):
 
 class ServiceNotFoundError(Exception):
     """Услуга не найдена"""
+
+
+class DocumentNotFoundError(Exception):
+    """Документ не найден"""
+
+
+class PhotoNotFoundError(Exception):
+    """Фото не найдено"""

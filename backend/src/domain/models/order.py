@@ -12,7 +12,7 @@ from src.domain.models import Request, User, Service
 from src.domain.models.mixins import TimestampMixin
 
 if typing.TYPE_CHECKING:
-    from src.domain.models import OrderPhoto
+    from src.domain.models import OrderPhoto, Document
 
 
 class Order(TimestampMixin, BaseModel):
@@ -23,6 +23,7 @@ class Order(TimestampMixin, BaseModel):
     status: Mapped[OrderStatus] = mapped_column(String(50), nullable=False)
     address: Mapped[str] = mapped_column(String(255), nullable=True)
     data: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=True)
+    end_data: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=True, default=None)
     request_id: Mapped[UUID] = mapped_column(Uuid(as_uuid=True), ForeignKey("request.uuid"), nullable=False)
     employee_id: Mapped[UUID] = mapped_column(Uuid(as_uuid=True), ForeignKey("users.uuid"), nullable=True, default=None)
 
@@ -36,6 +37,10 @@ class Order(TimestampMixin, BaseModel):
     )
     photos: Mapped[list["OrderPhoto"]] = relationship(
         "OrderPhoto",
+        back_populates="order",
+    )
+    documents: Mapped[list["Document"]] = relationship(
+        "Document",
         back_populates="order",
     )
 

@@ -22,6 +22,25 @@ class OrderService:
         schema_orders = [Order.from_orm_model(order) for order in orders]
         return schema_orders
 
+    async def list_for_calendar(self, current_user):
+        query = select(models.Order).where(
+            models.Order.deleted_at.is_(None),
+            models.Order.data.is_not(None),
+        )
+        role = current_user.role.name
+        if role == choices.Role.MANAGER.value:
+            query = query.join(models.Request, models.Order.request_id == models.Request.uuid).where(
+                models.Request.manager_id == uuid.UUID(current_user.id)
+            )
+        elif role == choices.Role.EMPLOYEE.value:
+            query = query.where(models.Order.employee_id == uuid.UUID(current_user.id))
+        elif role == choices.Role.USER.value:
+            query = query.join(models.Request, models.Order.request_id == models.Request.uuid).where(
+                models.Request.client_email == current_user.email
+            )
+        orders = self.session.execute(query).scalars().all()
+        return [Order.from_orm_model(order) for order in orders]
+
     async def get(self, order_id: str):
         try:
             order = self.session.execute(
@@ -45,6 +64,8 @@ class OrderService:
             orm_order.address = order_edit.address
         if "data" in set_fields:
             orm_order.data = order_edit.data
+        if "end_data" in set_fields:
+            orm_order.end_data = order_edit.end_data
         if "status" in set_fields:
             orm_order.status = order_edit.status.value
         if "employee_id" in set_fields:
@@ -72,23 +93,6 @@ class OrderService:
                     models.OrderServiceRelation(order_id=orm_order.uuid, service_id=service_id)
                 )
             self.session.add_all(order_service_relations)
-        if "photos_urls" in set_fields:
-            photos_to_delete = self.session.execute(
-                select(models.OrderPhoto).where(
-                    models.OrderPhoto.order_id == orm_order.uuid,
-                    models.OrderPhoto.url.not_in(order_edit.photos_urls))
-            ).scalars().all()
-            for photo in photos_to_delete:
-                self.s3_service.delete_file(photo.url)
-                self.session.delete(photo)
-            existing_order_photos = self.session.execute(select(models.OrderPhoto.url).where(models.OrderPhoto.order_id == orm_order.uuid)).scalars().all()
-            order_photos = []
-            for photo_url in order_edit.photos_urls:
-                if photo_url not in existing_order_photos:
-                    order_photos.append(
-                        models.OrderPhoto(order_id=orm_order.uuid, url=photo_url)
-                    )
-            self.session.add_all(order_photos)
         self.session.add(orm_order)
         self.session.commit()
         return Order.from_orm_model(orm_order)

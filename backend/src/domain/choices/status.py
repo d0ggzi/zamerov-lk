@@ -24,3 +24,9 @@ class OrderStatus(enum.Enum):
     RESCHEDULE = "RESCHEDULE"
     CANCELLED = "CANCELLED"
     COMPLETED = "COMPLETED"
+
+
+class DocumentStatus(enum.Enum):
+    # Список может расширяться (например, "на подписании", "отклонён").
+    NOT_SIGNED = "NOT_SIGNED"
+    SIGNED = "SIGNED"

@@ -15,8 +15,8 @@ class S3Service:
             aws_secret_access_key=settings.YANDEX_S3_SECRET_KEY,
         )
 
-    def get_presigned_url(self, filename: str, content_type: str) -> tuple[str, str]:
-        object_name = f"photos/{datetime.utcnow().timestamp()}_{filename}"
+    def get_presigned_url(self, filename: str, content_type: str, folder: str = "uploads") -> tuple[str, str]:
+        object_name = f"{folder}/{datetime.utcnow().timestamp()}_{filename}"
         presigned_url = self.s3.generate_presigned_url(
             'put_object',
             Params={

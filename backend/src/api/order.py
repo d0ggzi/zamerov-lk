@@ -3,6 +3,7 @@ from fastapi import APIRouter, Depends
 
 from src.api.dependencies.auth import get_current_user
 from src.api.dependencies.order import get_order_service
+from src.api.schemas import User
 from src.api.schemas.order import OrderEdit
 from src.service.exceptions import OrderNotFoundError, UserNotFoundError
 from src.service.order import OrderService
@@ -13,6 +14,15 @@ order_router = APIRouter(prefix="/api/orders", tags=["orders"], dependencies=[De
 @order_router.get("/")
 async def list_orders(order_service: OrderService = Depends(get_order_service)):
     return await order_service.list()
+
+
+# Объявлено до "/{order_id}", иначе путь "calendar" попадёт в параметр order_id.
+@order_router.get("/calendar")
+async def calendar_orders(
+    current_user: User = Depends(get_current_user),
+    order_service: OrderService = Depends(get_order_service),
+):
+    return await order_service.list_for_calendar(current_user)
 
 
 @order_router.get("/{order_id}")
