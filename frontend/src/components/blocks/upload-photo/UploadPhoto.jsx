@@ -1,8 +1,7 @@
-import {useState, useContext} from "react";
-import {UserContext} from "../../../context/user-context.jsx";
+import {useState} from "react";
+import {uploadFileToS3} from "../../../api/s3.js";
 
 export default function UploadPhoto({onUploadSuccess}) {
-    const [token] = useContext(UserContext);
     const [files, setFiles] = useState([]);
     const [isUploading, setIsUploading] = useState(false);
 
@@ -33,27 +32,7 @@ export default function UploadPhoto({onUploadSuccess}) {
 
         try {
             for (const file of files) {
-                const query = new URLSearchParams({
-                    filename: file.name,
-                    content_type: file.type
-                });
-
-                const res = await fetch(`/api/s3/presigned-url?${query.toString()}`);
-                if (!res.ok) throw new Error("Не удалось получить presigned URL");
-
-                const {upload_url, public_url} = await res.json();
-
-                // загрузка в S3 по presigned URL
-                const uploadRes = await fetch(upload_url, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': file.type
-                    },
-                    body: file
-                });
-
-                if (!uploadRes.ok) throw new Error("Не удалось загрузить файл в S3");
-
+                const public_url = await uploadFileToS3(file, "photos");
                 uploaded.push({url: public_url});
             }
 

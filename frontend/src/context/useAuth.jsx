@@ -1,6 +1,7 @@
 import {useContext, useMemo} from "react";
 import {jwtDecode} from "jwt-decode";
 import {UserContext} from "./user-context.jsx";
+import {MANAGER_ROLES} from "../constants/roles.js";
 
 export function useAuth() {
     const [token] = useContext(UserContext);
@@ -16,9 +17,9 @@ export function useAuth() {
     }, [token]);
 
     const hasRole = (requiredRoles) => {
-        if (!user || !user.role.name) return false;
+        if (!user?.role?.name) return false;
         return requiredRoles.includes(user.role.name);
     };
 
-    return {user, hasRole, isAuthenticated: !!user};
+    return {user, hasRole, isManager: hasRole(MANAGER_ROLES), isAuthenticated: !!user};
 }

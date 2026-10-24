@@ -4,6 +4,9 @@ import {buttonPrimary, inputStyle} from "../../../themes/default.js";
 import {REQUEST_STATUS_OPTIONS} from "../../../../constants/Status.jsx";
 import MultiSelectDropdown from "../../../blocks/multi-select-dropdown/MultiSelectDropdown.jsx";
 import {UserContext} from "../../../../context/user-context.jsx";
+import {apiFetch} from "../../../../api/client.js";
+import {sameIdSet} from "../../../../utils/array.js";
+import {toDatetimeLocal} from "../../../../utils/date.js";
 
 export default function RequestEditPage() {
     const {id} = useParams();
@@ -14,31 +17,27 @@ export default function RequestEditPage() {
     const [description, setDescription] = useState("");
     const [address, setAddress] = useState("");
     const [status, setStatus] = useState("");
+    const [date, setDate] = useState(null);
 
     const [services, setServices] = useState([]);
     const [selectedServices, setSelectedServices] = useState([]);
 
     useEffect(() => {
-        fetch(`/api/requests/${id}`, {
-            headers: {Authorization: `Bearer ${token}`},
-        })
-            .then((res) => res.json())
+        apiFetch(`/api/requests/${id}`, {token})
             .then((data) => {
                 setRequest(data);
                 setDescription(data.description || "");
                 setAddress(data.address || "");
                 setStatus(data.status || "");
+                setDate(data.data ? new Date(data.data) : null);
                 setSelectedServices(data.services ? data.services.map(service => service.id) : []);
             })
             .catch(console.error);
     }, [id, token]);
 
     useEffect(() => {
-        fetch("/api/services/", {
-            headers: {Authorization: `Bearer ${token}`},
-        })
-            .then((res) => res.json())
-            .then((data) => setServices(data))
+        apiFetch("/api/services/", {token})
+            .then(setServices)
             .catch(console.error);
     }, [token]);
 
@@ -55,7 +54,12 @@ export default function RequestEditPage() {
         if (status !== (request.status || "")) {
             updatedFields.status = status;
         }
-        if (selectedServices.length !== request.services.length) {
+        const originalData = request.data ? new Date(request.data).toISOString() : null;
+        const newData = date ? date.toISOString() : null;
+        if (newData !== originalData) {
+            updatedFields.data = newData;
+        }
+        if (!sameIdSet(selectedServices, request.services.map((s) => s.id))) {
             updatedFields.services_ids = selectedServices;
         }
 
@@ -65,18 +69,10 @@ export default function RequestEditPage() {
         }
 
         try {
-            const res = await fetch(`/api/requests/${id}`, {
-                method: "PATCH",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`,
-                },
-                body: JSON.stringify(updatedFields),
-            });
-            if (!res.ok) throw new Error("Ошибка обновления заявки");
+            await apiFetch(`/api/requests/${id}`, {token, method: "PATCH", body: updatedFields});
             navigate("/requests");
-        } catch (err) {
-            alert(err.message);
+        } catch {
+            alert("Ошибка обновления заявки");
         }
     };
 
@@ -108,6 +104,14 @@ export default function RequestEditPage() {
                         </option>
                     ))}
                 </select>
+
+                <label className="block text-sm text-gray-600 mb-1">Дата и время</label>
+                <input
+                    type="datetime-local"
+                    value={toDatetimeLocal(date)}
+                    onChange={(e) => setDate(e.target.value ? new Date(e.target.value) : null)}
+                    className={inputStyle}
+                />
 
                 <MultiSelectDropdown
                     options={services}

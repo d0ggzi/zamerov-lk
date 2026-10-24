@@ -29,13 +29,13 @@ export default function DashboardPage() {
                     Споры
                 </p>
             </Link>
-            <Link to="/"
+            <Link to="/documents"
                   className={cellBlock}>
                 <p className={cellText}>
                     Документы
                 </p>
             </Link>
-            <Link to="/"
+            <Link to="/calendar"
                   className={cellBlock}>
                 <p className={cellText}>
                     Календарь
@@ -54,7 +54,7 @@ export default function DashboardPage() {
                     Частые вопросы
                 </p>
             </Link>
-            <Link to="/"
+            <Link to="/payment"
                   className={cellBlock}>
                 <p className={cellText}>
                     Оплата

@@ -2,11 +2,12 @@ import {useState, useEffect, useContext} from "react";
 import {useAuth} from "../../../../context/useAuth.jsx";
 import {useNavigate} from "react-router-dom";
 import {UserContext} from "../../../../context/user-context.jsx";
+import {apiFetch} from "../../../../api/client.js";
 import {buttonPrimary, inputStyle} from "../../../themes/default.js";
 import MultiSelectDropdown from "../../../blocks/multi-select-dropdown/MultiSelectDropdown.jsx";
 
 export default function RequestCreatePage() {
-    const [token,] = useContext(UserContext);
+    const [token] = useContext(UserContext);
     const {user} = useAuth();
     const [description, setDescription] = useState("");
     const [address, setAddress] = useState("");
@@ -15,11 +16,8 @@ export default function RequestCreatePage() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        fetch("/api/services/", {
-            headers: {Authorization: `Bearer ${token}`},
-        })
-            .then((res) => res.json())
-            .then((data) => setServices(data))
+        apiFetch("/api/services/", {token})
+            .then(setServices)
             .catch(console.error);
     }, [token]);
 
@@ -33,18 +31,10 @@ export default function RequestCreatePage() {
         };
 
         try {
-            const res = await fetch("/api/requests/", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`,
-                },
-                body: JSON.stringify(payload),
-            });
-            if (!res.ok) throw new Error("Ошибка создания заявки");
+            await apiFetch("/api/requests/", {token, method: "POST", body: payload});
             navigate("/requests");
-        } catch (err) {
-            alert(err.message);
+        } catch {
+            alert("Ошибка создания заявки");
         }
     };
 

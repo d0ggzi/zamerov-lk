@@ -2,37 +2,28 @@ import {useContext, useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import {UserContext} from "../../../../context/user-context.jsx";
 import {useAuth} from "../../../../context/useAuth.jsx";
+import {apiFetch} from "../../../../api/client.js";
 import Service from "../../../blocks/service/Service.jsx";
 
 export default function ServicesPage() {
-    const [token, setToken] = useContext(UserContext);
-    const {user} = useAuth();
+    const [token] = useContext(UserContext);
+    const {isManager} = useAuth();
     const [services, setServices] = useState([]);
 
     useEffect(() => {
-        fetch("/api/services/", {
-            headers: {Authorization: `Bearer ${token}`},
-        })
-            .then((res) => res.json())
-            .then((data) => setServices(data))
+        apiFetch("/api/services/", {token})
+            .then(setServices)
             .catch(console.error);
     }, [token]);
 
-    const handleDelete = (id) => {
+    const handleDelete = async (id) => {
         if (!window.confirm("Удалить услугу?")) return;
-
-        fetch(`/api/services/${id}`, {
-            method: "DELETE",
-            headers: {Authorization: `Bearer ${token}`},
-        })
-            .then((res) => {
-                if (res.ok) {
-                    setServices((prev) => prev.filter((s) => s.id !== id));
-                } else {
-                    throw new Error("Ошибка при удалении");
-                }
-            })
-            .catch((err) => alert(err.message));
+        try {
+            await apiFetch(`/api/services/${id}`, {token, method: "DELETE"});
+            setServices((prev) => prev.filter((s) => s.id !== id));
+        } catch {
+            alert("Ошибка при удалении");
+        }
     };
 
     return (
@@ -43,14 +34,14 @@ export default function ServicesPage() {
                         <p className="text-gray-500">Нет услуг</p>
                     ) : (
                         services.map((service) => (
-                            <Service key={service.id} service={service} onDelete={handleDelete} canDelete={["manager", "admin"].includes(user?.role?.name)}/>
+                            <Service key={service.id} service={service} onDelete={handleDelete} canDelete={isManager}/>
                         ))
                     )}
                 </div>
 
 
             </div>
-            {["manager", "admin"].includes(user?.role?.name) && (
+            {isManager && (
                 <Link to="/services/new"
                       className="flex flex-row justify-center items-center mt-4 text-blue-600 hover:underline">
                     + Создать услугу

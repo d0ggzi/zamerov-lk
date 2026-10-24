@@ -1,6 +1,7 @@
 import {useContext, useState} from "react";
 import { useNavigate, Link } from "react-router-dom";
 import {UserContext} from "../../../../context/user-context.jsx";
+import {apiFetch} from "../../../../api/client.js";
 import {buttonPrimary, inputStyle} from "../../../themes/default.js";
 
 export default function LoginPage() {
@@ -18,21 +19,11 @@ export default function LoginPage() {
     formData.append("password", password);
 
     try {
-      const response = await fetch("/api/auth/token", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        body: formData,
-      });
-
-      if (!response.ok) throw new Error("Неверный логин или пароль");
-
-      const data = await response.json();
+      const data = await apiFetch("/api/auth/token", {method: "POST", body: formData});
       setToken(data.access_token);
       navigate("/");
-    } catch (err) {
-      setError(err.message);
+    } catch {
+      setError("Неверный логин или пароль");
     }
   };
 

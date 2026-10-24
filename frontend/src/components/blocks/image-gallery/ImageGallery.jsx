@@ -71,9 +71,11 @@ export default function ImageGallery({images = [], isOpen = false, onClose, onRe
                         </figure>
                     ))}
                 </div>
-                <UploadPhoto
-                    onUploadSuccess={onAddPhotos}
-                />
+                {onAddPhotos && (
+                    <UploadPhoto
+                        onUploadSuccess={onAddPhotos}
+                    />
+                )}
             </div>
         </div>
     );

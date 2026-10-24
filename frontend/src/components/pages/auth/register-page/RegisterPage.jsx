@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import {apiFetch} from "../../../../api/client.js";
 import {buttonPrimary, inputStyle} from "../../../themes/default.js";
 
 export default function RegisterPage() {
@@ -13,15 +14,13 @@ export default function RegisterPage() {
     e.preventDefault();
     setError("");
     try {
-      const response = await fetch("/api/auth/register", {
+      await apiFetch("/api/auth/register", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, name, password, role_name: "user" }),
+        body: { email, name, password, role_name: "user" },
       });
-      if (!response.ok) throw new Error("Ошибка при регистрации");
       navigate("/login");
-    } catch (err) {
-      setError(err.message);
+    } catch {
+      setError("Ошибка при регистрации");
     }
   };
 

@@ -1,32 +1,28 @@
 import {cardStyle} from "./styles";
 import {Link} from "react-router-dom";
-import {useAuth} from "../../../context/useAuth.jsx";
 import {REQUEST_STATUS_OPTIONS} from "../../../constants/Status.jsx";
 
 export default function Request({request, onDelete, canDelete}) {
-    const { user } = useAuth();
+    const handleDelete = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        onDelete(request.id);
+    };
 
     return (
-        <div className={`${cardStyle} relative group pb-8`}>
-            <p className="font-medium">Описание: {request.description || "-"}</p>
+        <Link to={`/requests/${request.id}`} className={`${cardStyle} relative group pb-8 space-y-1 block`}>
             <p className="text-sm text-gray-600">Адрес: {request.address || "-"}</p>
             <p className="text-sm text-gray-600">Статус: {REQUEST_STATUS_OPTIONS[request.status] || "-"}</p>
             <p className="text-sm text-gray-600">
                 Услуги: {request.services && request.services.length > 0 ? request.services.map(s => s.name).join(", ") : "-"}
             </p>
-
-            {["manager", "admin"].includes(user?.role?.name) && (
-                <Link
-                    to={`/requests/edit/${request.id}`}
-                    className="text-sm text-blue-600 hover:underline mt-2 inline-block"
-                >
-                    ✎ Редактировать
-                </Link>
+            {request.description && (
+                <p className="text-sm text-gray-600">Описание: {request.description}</p>
             )}
 
             {canDelete && (
                 <button
-                    onClick={() => onDelete(request.id)}
+                    onClick={handleDelete}
                     className="absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity"
                     title="Удалить заявку"
                 >
@@ -38,6 +34,6 @@ export default function Request({request, onDelete, canDelete}) {
                     </svg>
                 </button>
             )}
-        </div>
+        </Link>
     );
 }

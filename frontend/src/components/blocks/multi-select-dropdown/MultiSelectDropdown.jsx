@@ -4,10 +4,14 @@ function MultiSelectDropdown({options, selected, setSelected}) {
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef(null);
 
+    // id сравниваем как строки, чтобы не зависеть от того, пришли они числами
+    // (со страниц редактирования) или строками (при создании).
+    const isSelected = (id) => selected.some((val) => String(val) === String(id));
+
     const toggleSelect = (id) => {
         setSelected((prev) =>
-            prev.includes(id)
-                ? prev.filter((val) => val !== id)
+            isSelected(id)
+                ? prev.filter((val) => String(val) !== String(id))
                 : [...prev, id]
         );
     };
@@ -44,8 +48,8 @@ function MultiSelectDropdown({options, selected, setSelected}) {
                             <input
                                 type="checkbox"
                                 value={s.id}
-                                checked={selected.includes(String(s.id))}
-                                onChange={() => toggleSelect(String(s.id))}
+                                checked={isSelected(s.id)}
+                                onChange={() => toggleSelect(s.id)}
                                 className="mr-2"
                             />
                             {s.name}

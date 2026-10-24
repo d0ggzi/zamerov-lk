@@ -22,3 +22,12 @@ export const ORDER_STATUS_OPTIONS = {
     CANCELLED: "Отменено",
     COMPLETED: "Выполнен"
 };
+
+// Статусы заявки, требующие оплаты — показываются на странице оплаты.
+export const PAYABLE_REQUEST_STATUSES = ["PAYMENT_IN_PROGRESS", "PREPAID", "INVOICE_ISSUED"];
+
+// Статусы документа. Список может расширяться.
+export const DOCUMENT_STATUS_OPTIONS = {
+    NOT_SIGNED: "Не подписан",
+    SIGNED: "Подписан"
+};

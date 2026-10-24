@@ -1,12 +1,17 @@
 import {sidebarElement, sidebarElementSvg, sidebarElementCounter} from "./styles.js";
 
-function Sidebar () {
+function Sidebar ({open, onClose}) {
     return (
-        <aside id="logo-sidebar"
-               className="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full border-r sm:translate-x-0 bg-gray-800 border-gray-700"
+        <>
+            <div
+                onClick={onClose}
+                className={`${open ? "block" : "hidden"} fixed inset-0 z-30 bg-gray-900/50 sm:hidden`}
+                aria-hidden="true"/>
+            <aside id="logo-sidebar"
+               className={`fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform ${open ? "translate-x-0" : "-translate-x-full"} border-r sm:translate-x-0 bg-gray-800 border-gray-700`}
                aria-label="Sidebar">
             <div className="h-full px-3 pb-4 overflow-y-auto bg-gray-800">
-                <ul className="space-y-2 font-medium">
+                <ul onClick={onClose} className="space-y-2 font-medium">
                     <li>
                         <a href="/"
                            className={sidebarElement}>
@@ -83,7 +88,7 @@ function Sidebar () {
                         </a>
                     </li>
                     <li>
-                        <a href="#"
+                        <a href="/documents"
                            className={sidebarElement}>
                             <svg
                                 className={sidebarElementSvg}
@@ -99,7 +104,7 @@ function Sidebar () {
                         </a>
                     </li>
                     <li>
-                        <a href="#"
+                        <a href="/calendar"
                            className={sidebarElement}>
                             <svg
                                 className={sidebarElementSvg}
@@ -147,7 +152,7 @@ function Sidebar () {
                         </a>
                     </li>
                     <li>
-                        <a href="#"
+                        <a href="/payment"
                            className={sidebarElement}>
                             <svg
                                 className={sidebarElementSvg}
@@ -163,17 +168,14 @@ function Sidebar () {
                         </a>
                     </li>
                     <li>
-                        <a href="#"
+                        <a href="/chat"
                            className={sidebarElement}>
                             <svg
                                 className={sidebarElementSvg}
-                                aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                                viewBox="0 0 20 20">
-                                <path d="M5 5V.13a2.96 2.96 0 0 0-1.293.749L.879 3.707A2.96 2.96 0 0 0 .13 5H5Z"/>
-                                <path
-                                    d="M6.737 11.061a2.961 2.961 0 0 1 .81-1.515l6.117-6.116A4.839 4.839 0 0 1 16 2.141V2a1.97 1.97 0 0 0-1.933-2H7v5a2 2 0 0 1-2 2H0v11a1.969 1.969 0 0 0 1.933 2h12.134A1.97 1.97 0 0 0 16 18v-3.093l-1.546 1.546c-.413.413-.94.695-1.513.81l-3.4.679a2.947 2.947 0 0 1-1.85-.227 2.96 2.96 0 0 1-1.635-3.257l.681-3.397Z"/>
-                                <path
-                                    d="M8.961 16a.93.93 0 0 0 .189-.019l3.4-.679a.961.961 0 0 0 .49-.263l6.118-6.117a2.884 2.884 0 0 0-4.079-4.078l-6.117 6.117a.96.96 0 0 0-.263.491l-.679 3.4A.961.961 0 0 0 8.961 16Zm7.477-9.8a.958.958 0 0 1 .68-.281.961.961 0 0 1 .682 1.644l-.315.315-1.36-1.36.313-.318Zm-5.911 5.911 4.236-4.236 1.359 1.359-4.236 4.237-1.7.339.341-1.699Z"/>
+                                aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round"
+                                      d="M8.625 12a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 0 1-2.555-.337A5.972 5.972 0 0 1 5.41 20.97a5.969 5.969 0 0 1-.474-.065 4.48 4.48 0 0 0 .978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25Z"/>
                             </svg>
                             <span className="flex-1 ms-3 whitespace-nowrap">Чат</span>
                         </a>
@@ -181,6 +183,7 @@ function Sidebar () {
                 </ul>
             </div>
         </aside>
+        </>
     )
 }
 

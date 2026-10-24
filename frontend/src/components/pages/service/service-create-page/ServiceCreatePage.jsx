@@ -1,38 +1,28 @@
-import {useState, useEffect, useContext} from "react";
+import {useState, useContext} from "react";
 import { useNavigate } from "react-router-dom";
 import {UserContext} from "../../../../context/user-context.jsx";
+import {apiFetch} from "../../../../api/client.js";
 import {buttonPrimary, inputStyle} from "../../../themes/default.js";
 
 export default function ServiceCreatePage() {
-  const [token,] = useContext(UserContext);
+  const [token] = useContext(UserContext);
   const [name, setName] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const payload = {
-      name
-    };
+
+    if (name.trim().length === 0) {
+      setError("Имя не может быть пустым");
+      return;
+    }
 
     try {
-      if (name.length === 0){
-        setError("Имя не может быть пустым");
-        return;
-      }
-
-      const res = await fetch("/api/services/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(payload),
-      });
-      if (!res.ok) throw new Error("Ошибка создания услуги");
+      await apiFetch("/api/services/", {token, method: "POST", body: {name}});
       navigate("/services");
-    } catch (err) {
-      alert(err.message);
+    } catch {
+      alert("Ошибка создания услуги");
     }
   };
 
